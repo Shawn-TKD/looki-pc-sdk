@@ -6,6 +6,30 @@
 > 当前为实验性 `0.1.0`，已在一台 Looki L1（设备版本 1.53、软件版本 79）和
 > Windows 11 上实机验证。项目与 Looki 官方无隶属或授权关系。
 
+## 为什么做这个项目
+
+Looki 原本以手机 App 和云端服务为中心。这个项目把用户自己设备里的照片、录音和
+视频接回个人电脑，让本地工具可以在用户控制的目录中完成下载、整理、转写、检索和
+总结。媒体不必为了进入 AI 工作流而先上传到厂商云端。
+
+一个典型链路是：
+
+```text
+Looki
+  ├─ Bluetooth：认证、状态与拍摄控制
+  └─ Wi-Fi hotspot：原始媒体下载
+          ↓
+     本地媒体目录
+          ↓
+  Codex / Claude Code / 本地 ASR / VLM
+          ↓
+  日记、相册索引、会议记录或个人记忆库
+```
+
+SDK 只负责可靠地连接设备并取得原始数据。选择什么模型、是否联网、保存多久，都由
+用户自己的 Agent 和存储策略决定。完整设计见
+[本地优先 AI 工作流](docs/LOCAL-FIRST-AI.md)。
+
 ## 已验证能力
 
 | 能力 | 实机状态 |
@@ -81,6 +105,7 @@ src/looki/       SDK、CLI、Windows 配对与热点支持
 proto/           逆向恢复的 LCMP v1/v2 schema
 tools/           HCI/RFCOMM 分析工具，不含任何抓包
 docs/research/   协议、固件和 Android 平台研究结论
+firmware/        可公开的 OTA 元数据、分区清单和系统属性摘录
 private/         本地设备凭据，已被 .gitignore 排除
 ```
 

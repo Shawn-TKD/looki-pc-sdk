@@ -7,6 +7,9 @@
 软件版本 `79`，因此不能假设 OTA 静态分析与实机运行版本完全一致。
 
 公开仓库只记录版本、校验信息和分析结论，不重新分发厂商 APK、OTA 或分区镜像。
+可公开的原始 OTA 元数据、payload 属性、分区清单和系统属性摘录位于
+[`firmware/1.54.80/`](../../firmware/1.54.80/)。完整分析过程与当前进度见
+[FIRMWARE-REVERSE-ENGINEERING.md](FIRMWARE-REVERSE-ENGINEERING.md)。
 
 ## OTA 分区
 

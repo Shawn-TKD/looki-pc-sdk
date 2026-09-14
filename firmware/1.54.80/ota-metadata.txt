@@ -1,0 +1,10 @@
+ota-property-files=payload_metadata.bin:1260:27567,payload.bin:1260:348537286,payload_properties.txt:348538604:154,care_map.pb:695:518,metadata:69:579
+ota-required-cache=0
+ota-streaming-property-files=payload.bin:1260:348537286,payload_properties.txt:348538604:154,care_map.pb:695:518,metadata:69:579
+ota-type=AB
+post-build=Looki/monaco_go/monaco_go:11/1.54/eng.huipen.20260819.163015:user/release-keys
+post-build-incremental=eng.huipen.20260819.163015
+post-sdk-level=30
+post-security-patch-level=2022-09-01
+post-timestamp=1787128215
+pre-device=monaco_go

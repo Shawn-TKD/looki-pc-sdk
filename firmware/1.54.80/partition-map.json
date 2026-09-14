@@ -1,0 +1,22 @@
+{
+  "firmware_version": "1.54.80",
+  "format": "Android A/B OTA update_engine payload",
+  "partitions": [
+    {"name": "system", "image_size": 376565760, "payload_operations": 180},
+    {"name": "vendor", "image_size": 235663360, "payload_operations": 113},
+    {"name": "boot", "image_size": 100663296, "payload_operations": 48},
+    {"name": "modem", "image_size": 82808832, "payload_operations": 40},
+    {"name": "product", "image_size": 67227648, "payload_operations": 33},
+    {"name": "system_ext", "image_size": 64073728, "payload_operations": 31},
+    {"name": "recovery", "image_size": 50331648, "payload_operations": 24},
+    {"name": "dtbo", "image_size": 8388608, "payload_operations": 4},
+    {"name": "xbl", "image_size": 3096576, "payload_operations": 2},
+    {"name": "abl", "image_size": 159744, "payload_operations": 1},
+    {"name": "vbmeta", "image_size": 8192, "payload_operations": 1},
+    {"name": "vbmeta_system", "image_size": 4096, "payload_operations": 1}
+  ],
+  "notes": [
+    "image_size is the extracted partition image size",
+    "payload_operations comes from the update-engine manifest"
+  ]
+}

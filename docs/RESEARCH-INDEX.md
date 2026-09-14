@@ -7,7 +7,9 @@
 | [research/PROTOCOL.md](research/PROTOCOL.md) | RFCOMM、LCMP、认证、控制命令和媒体数据面 |
 | [research/ANDROID-PLATFORM.md](research/ANDROID-PLATFORM.md) | Android 11、Snapdragon W5、分区、DevoMain 特权应用 |
 | [research/FIRMWARE-OTA.md](research/FIRMWARE-OTA.md) | OTA 结构、版本、更新路径与公开仓库边界 |
+| [research/FIRMWARE-REVERSE-ENGINEERING.md](research/FIRMWARE-REVERSE-ENGINEERING.md) | 固件取得、拆包方法、模块地图和逆向进度 |
 | [research/VERIFIED-RESULTS.md](research/VERIFIED-RESULTS.md) | 电脑独立读取与主动控制的实机证据摘要 |
+| [LOCAL-FIRST-AI.md](LOCAL-FIRST-AI.md) | 不经厂商云端的媒体整理和 Agent 集成设计 |
 | [SECOND-PC.md](SECOND-PC.md) | 第二台 Windows 电脑迁移和验证步骤 |
 
 `proto/lcmp_v1.proto` 与 `proto/lcmp_v2.proto` 是从本地静态分析恢复的消息 schema。
@@ -23,3 +25,6 @@
 
 原始研究现场约 1.96 GB，包含 OTA、分区镜像、APK、媒体和抓包。这些材料用于本地
 验证，但因体积、版权和凭据风险不进入公开 Git 历史。
+
+`firmware/1.54.80/` 保存由固件生成的小型研究工件。它们可以用于核对版本和复现
+分析，但不包含可刷写镜像。
