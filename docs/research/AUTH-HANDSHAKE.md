@@ -11,6 +11,9 @@
 
 ## 已验证状态机
 
+完整的 ACL、认证/加密、RFCOMM PN/MSC 和第一条 LCMP 消息时序见
+[BLUETOOTH-SESSION-TIMELINE.md](BLUETOOTH-SESSION-TIMELINE.md)。
+
 | 顺序 | 方向 | LCMP 内容 | 处理 |
 |---:|---|---|---|
 | 1 | Looki → client | seq + tag 200 `DeviceAuthRequestPb` | ACK 设备 seq；读取 field 1 当前 challenge |

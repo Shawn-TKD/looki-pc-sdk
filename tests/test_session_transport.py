@@ -11,6 +11,7 @@ class FakeTransport:
         self.incoming = [incoming]
         self.sent: list[bytes] = []
         self.closed = False
+        self.connection_metadata = {"encryption_mode": 2}
 
     def settimeout(self, _timeout: float | None) -> None:
         pass
@@ -56,6 +57,8 @@ class SessionTransportTest(unittest.TestCase):
         self.assertIn((1, 2, challenge), list(fields(auth_payload)))
         self.assertTrue(transport.closed)
         self.assertIn("auth.challenge.accepted", [event["event"] for event in trace])
+        connected = next(event for event in trace if event["event"] == "transport.connected")
+        self.assertEqual(connected["encryption_mode"], 2)
 
 
 if __name__ == "__main__":

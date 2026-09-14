@@ -62,7 +62,8 @@ class LookiSession:
             return
         self._emit("transport.opening", channel=self.channel)
         self._transport = self._transport_factory(self.address, self.channel, 10)
-        self._emit("transport.connected", channel=self.channel)
+        metadata = getattr(self._transport, "connection_metadata", {})
+        self._emit("transport.connected", channel=self.channel, **metadata)
 
     def close(self) -> None:
         if self._transport is not None:

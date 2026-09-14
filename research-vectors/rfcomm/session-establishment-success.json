@@ -1,0 +1,26 @@
+{
+  "format": "looki-rfcomm-session-establishment-v1",
+  "source_platform": "android-official-app",
+  "time_origin": "br_edr_connection_complete",
+  "sensitive_values_removed": true,
+  "windows_hci_capture_available": false,
+  "events": [
+    {"time_s": 0.000, "direction": "controller_to_host", "event": "connection_complete", "status": 0},
+    {"time_s": 1.540, "direction": "controller_to_host", "event": "authentication_complete", "status": 0},
+    {"time_s": 1.576, "direction": "controller_to_host", "event": "encryption_change", "status": 0, "enabled": 2},
+    {"time_s": 1.638, "direction": "client_to_looki", "event": "rfcomm_sabm", "dlci": 0},
+    {"time_s": 1.646, "direction": "looki_to_client", "event": "rfcomm_ua", "dlci": 0},
+    {"time_s": 1.647, "direction": "client_to_looki", "event": "rfcomm_pn_command", "hex": "831106f00000de030007"},
+    {"time_s": 1.728, "direction": "looki_to_client", "event": "rfcomm_pn_response", "hex": "811106e00000de030007"},
+    {"time_s": 1.729, "direction": "client_to_looki", "event": "rfcomm_sabm", "dlci": 6, "server_channel": 3},
+    {"time_s": 1.739, "direction": "looki_to_client", "event": "rfcomm_ua", "dlci": 6, "server_channel": 3},
+    {"time_s": 1.740, "direction": "client_to_looki", "event": "rfcomm_msc_command", "hex": "e3051b8d"},
+    {"time_s": 1.747, "direction": "looki_to_client", "event": "rfcomm_msc_response", "hex": "e1051b8d"},
+    {"time_s": 1.748, "direction": "looki_to_client", "event": "rfcomm_msc_command", "hex": "e3051b8d"},
+    {"time_s": 1.749, "direction": "client_to_looki", "event": "rfcomm_msc_response", "hex": "e1051b8d"},
+    {"time_s": 1.889, "direction": "looki_to_client", "event": "lcmp_message", "tag": 200, "payload": "withheld"},
+    {"time_s": 1.894, "direction": "client_to_looki", "event": "lcmp_ack_and_message", "tag": 201, "payload": "withheld"}
+  ],
+  "observed_rpn": false,
+  "first_application_sender": "looki"
+}

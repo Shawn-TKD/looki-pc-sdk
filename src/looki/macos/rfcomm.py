@@ -25,6 +25,11 @@ class _RFCOMMDelegate(NSObject):
     def rfcommChannelData_data_length_(self, _channel: object, data: object, length: int) -> None:
         self.owner._incoming.put(bytes(data[:length]))
 
+    def rfcommChannelOpenComplete_status_(self, channel: object, status: int) -> None:
+        self.owner._channel = channel
+        self.owner._open_status = int(status)
+        self.owner._open_complete = True
+
     def rfcommChannelClosed_(self, _channel: object) -> None:
         self.owner._closed = True
 
@@ -42,19 +47,69 @@ class MacOSRFCOMMTransport:
         self._incoming: queue.Queue[bytes] = queue.Queue()
         self._buffer = bytearray()
         self._closed = False
+        self._channel = None
+        self._open_status: int | None = None
+        self._open_complete = False
         self._delegate = _RFCOMMDelegate.alloc().initWithOwner_(self)
         self._device = IOBluetoothDevice.deviceWithAddressString_(address.replace(":", "-"))
         if self._device is None:
             raise ConnectionError(f"macOS could not create a Bluetooth device for {address}")
+        if not self._device.isPaired():
+            raise ConnectionError("Looki is not paired with this Mac")
 
-        status, opened_channel = self._device.openRFCOMMChannelSync_withChannelID_delegate_(
+        if not self._device.isConnected():
+            status = int(self._device.openConnection())
+            if status != 0:
+                raise ConnectionError(
+                    f"macOS could not open an authenticated baseband connection (IOReturn {status})"
+                )
+
+        auth_status = int(self._device.requestAuthentication())
+        if auth_status != 0:
+            raise ConnectionError(
+                f"macOS could not authenticate the Looki baseband connection "
+                f"(IOReturn {auth_status})"
+            )
+        self.connection_metadata = {
+            "paired": bool(self._device.isPaired()),
+            "baseband_connected": bool(self._device.isConnected()),
+            "authentication_status": auth_status,
+            "encryption_mode": int(self._device.getEncryptionMode()),
+        }
+
+        result = self._device.openRFCOMMChannelAsync_withChannelID_delegate_(
             None, channel_id, self._delegate
         )
-        if status != 0 or opened_channel is None:
+        if isinstance(result, tuple):
+            status, opened_channel = result
+            if opened_channel is not None:
+                self._channel = opened_channel
+        else:
+            status = result
+        if int(status) != 0:
             raise ConnectionError(
                 f"macOS could not open Looki RFCOMM channel {channel_id} (IOReturn {status})"
             )
-        self._channel = opened_channel
+
+        deadline = time.monotonic() + timeout
+        while not self._open_complete and time.monotonic() < deadline:
+            self._pump_run_loop(min(0.05, deadline - time.monotonic()))
+        if not self._open_complete:
+            raise TimeoutError(
+                f"macOS did not complete Looki RFCOMM channel {channel_id} open within {timeout}s"
+            )
+        if self._open_status != 0 or self._channel is None:
+            raise ConnectionError(
+                f"macOS could not complete Looki RFCOMM channel {channel_id} open "
+                f"(IOReturn {self._open_status})"
+            )
+        self.connection_metadata["encryption_mode"] = int(self._device.getEncryptionMode())
+
+    @staticmethod
+    def _pump_run_loop(interval: float) -> None:
+        NSRunLoop.currentRunLoop().runMode_beforeDate_(
+            NSDefaultRunLoopMode, NSDate.dateWithTimeIntervalSinceNow_(max(0.001, interval))
+        )
 
     def settimeout(self, timeout: float | None) -> None:
         self._timeout = timeout
@@ -86,9 +141,7 @@ class MacOSRFCOMMTransport:
             interval = 0.05
             if deadline is not None:
                 interval = min(interval, max(0.001, deadline - time.monotonic()))
-            NSRunLoop.currentRunLoop().runMode_beforeDate_(
-                NSDefaultRunLoopMode, NSDate.dateWithTimeIntervalSinceNow_(interval)
-            )
+            self._pump_run_loop(interval)
 
         result = bytes(self._buffer[:size])
         del self._buffer[:size]

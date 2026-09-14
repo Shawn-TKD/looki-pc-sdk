@@ -10,10 +10,10 @@ macOS 适配已经覆盖：
 - HTTP 媒体清单与 JPG、M4A、MP4 下载；
 - 传输结束后删除临时热点记录并尝试恢复原 Wi-Fi。
 
-Windows 路径已经实机验证。macOS 代码是在 Windows 开发机上完成的静态检查，尚未在
-真实 Mac 和 Looki 上完成端到端验证，所以目前标记为实验性。第一次 Mac 验证最有价值
-的顺序是：配对 → `status` → `photo` → `media-list` → `download-one`。逐步操作和
-可分享记录格式见 [MACOS-VERIFICATION.md](MACOS-VERIFICATION.md)。
+Windows 路径已经实机验证。macOS 已验证系统 BR/EDR 配对、基带连接和 channel 3 的
+异步打开，但尚未收到设备主动发送的 tag 200 challenge，因此仍标记为实验性。当前
+故障和协议证据见 [BLUETOOTH-SESSION-TIMELINE.md](research/BLUETOOTH-SESSION-TIMELINE.md)。
+打通 challenge 后再按 `status` → `photo` → `media-list` → `download-one` 验证。
 
 安装后可以先运行不接触设备的诊断：
 
@@ -27,8 +27,10 @@ Windows 路径已经实机验证。macOS 代码是在 Windows 开发机上完成
 ## 为什么 macOS 需要单独适配
 
 macOS 上的 Python 不提供 Windows/Linux 风格的 RFCOMM socket。SDK 因此通过 PyObjC
-调用 Apple 的 IOBluetooth 框架，用 `IOBluetoothDevice` 打开 RFCOMM channel 3，接收
-数据时运行 Objective-C run loop，再把它转换为 SDK 通用的阻塞字节流。
+调用 Apple 的 IOBluetooth 框架，先请求已有基带连接完成认证，再异步打开 RFCOMM
+channel 3，并等待 open-complete delegate。接收数据时运行 Objective-C run loop，
+再把它转换为 SDK 通用的阻塞字节流。同步 RFCOMM API 在真实 Mac 上返回过
+`0xe00002bc`，不再使用。
 
 LCMP、protobuf、认证和媒体 HTTP 协议没有改变。平台差异只在下面三层：
 
@@ -134,6 +136,7 @@ macOS 菜单栏手动选择原网络即可。
 |---|---|---|
 | 安装时找不到 `IOBluetooth` | 没安装 macOS 可选依赖 | 运行 `pip install -e '.[macos]'` |
 | 配对后 `status` 仍无法连接 | 手机占用、Looki 未唤醒或只有低功耗蓝牙记录 | 断开手机，唤醒 Looki；忽略设备后重新配对 |
+| channel 3 打开后约两秒被设备关闭 | 基带链路未认证/加密，或异步 open-complete 未正确完成 | 更新到使用异步 RFCOMM 的版本，运行 `--trace`，并检查系统链路加密状态 |
 | 出现蓝牙权限错误 | Terminal/Python 没有 Bluetooth 权限 | 在“隐私与安全性 → 蓝牙”授权后重开终端 |
 | PyObjC 安装或加载失败 | Python 架构与 Terminal/Rosetta 不一致 | 在 Apple Silicon 上统一使用原生 arm64 Python |
 | `media-list` 后网络中断 | Mac 已切到 Looki 的无互联网热点 | 等命令结束自动恢复，或手动选回原 Wi-Fi |
@@ -152,7 +155,8 @@ IOReturn 数值，以及成功时的媒体数量。不要保存或公开 owner-b
 ## Apple 接口资料
 
 - [IOBluetooth 框架](https://developer.apple.com/documentation/iobluetooth)
-- [IOBluetoothDevice.openRFCOMMChannelSync](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevice/openrfcommchannelsync%28_%3Awithchannelid%3Adelegate%3A%29)
+- [IOBluetoothDevice.openRFCOMMChannelAsync](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevice/openrfcommchannelasync%28_%3Awithchannelid%3Adelegate%3A%29)
+- [IOBluetoothDevice.requestAuthentication](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevice/requestauthentication%28%29)
 - [IOBluetoothRFCOMMChannelDelegate](https://developer.apple.com/documentation/iobluetooth/iobluetoothrfcommchanneldelegate)
 - [IOBluetoothDevicePair](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevicepair)
 - [使用 networksetup 确认接口](https://developer.apple.com/documentation/network/recording-a-packet-trace)
