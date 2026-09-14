@@ -13,8 +13,7 @@ from .device.http_media import HttpMediaClient, summarize_files
 from .device.media import request_file_service
 from .device.session import LookiSession
 from .device.status import read_status
-from .windows.pairing import pair_device
-from .windows.wifi import WindowsHotspot
+from .host import hotspot_connection, pair_device
 
 
 CONTROL_METHODS = {
@@ -71,7 +70,7 @@ def _media(args: argparse.Namespace) -> dict[str, object]:
     assert owner is not None
     with LookiSession(args.address, args.channel) as session:
         service = request_file_service(session, owner)
-        with WindowsHotspot(service.ssid, service.password, interface=args.interface):
+        with hotspot_connection(service.ssid, service.password, interface=args.interface):
             client = HttpMediaClient(service)
             items = client.list_files()
             summary = summarize_files(items)
@@ -95,7 +94,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
 
-    pair = commands.add_parser("pair", help="establish the Windows Classic Bluetooth bond")
+    pair = commands.add_parser("pair", help="establish the host Classic Bluetooth bond")
     pair.add_argument("--address", required=True)
     pair.add_argument("--renew", action="store_true")
 
@@ -113,11 +112,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     media_list = commands.add_parser("media-list", help="list media counts without filenames")
     _add_device_arguments(media_list, binding_required=True)
-    media_list.add_argument("--interface", default="WLAN")
+    media_list.add_argument("--interface", help="Wi-Fi interface; detected automatically on macOS")
 
     download = commands.add_parser("download-one", help="download one media item by type")
     _add_device_arguments(download, binding_required=True)
-    download.add_argument("--interface", default="WLAN")
+    download.add_argument("--interface", help="Wi-Fi interface; detected automatically on macOS")
     download.add_argument("--kind", choices=("jpg", "m4a", "mp4"), required=True)
     download.add_argument("--output", required=True)
     return parser

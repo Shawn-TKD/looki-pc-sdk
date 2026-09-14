@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-import socket
 import time
 from dataclasses import dataclass
-from typing import Iterator
+from typing import Callable, Iterator
 
 from ..credentials.binding import OwnerBinding
 from ..protocol.lcmp import Framer, fields, frame, message, uint
-from ..protocol.messages import ACK, DEVICE_AUTH_REQUEST, app_state, challenge_response
+from ..protocol.messages import ACK, DEVICE_AUTH_REQUEST
+from ..transport import ByteTransport, open_rfcomm
 
 
 RFCOMM_CHANNEL = 3
@@ -27,15 +27,23 @@ class ReceivedMessage:
 class LookiSession:
     """Own one authenticated RFCOMM session.
 
-    Pair the device with Windows before opening this session.  ``authenticate``
+    Pair the device with the host OS before opening this session.  ``authenticate``
     always answers the fresh device challenge; it never replays an old one.
     """
 
-    def __init__(self, address: str, channel: int = RFCOMM_CHANNEL, timeout: float = 30) -> None:
+    def __init__(
+        self,
+        address: str,
+        channel: int = RFCOMM_CHANNEL,
+        timeout: float = 30,
+        *,
+        transport_factory: Callable[[str, int, float], ByteTransport] = open_rfcomm,
+    ) -> None:
         self.address = address
         self.channel = channel
         self.timeout = timeout
-        self._socket: socket.socket | None = None
+        self._transport: ByteTransport | None = None
+        self._transport_factory = transport_factory
         self._framer = Framer()
         self._sequence = 1
         self._authenticated = False
@@ -48,51 +56,37 @@ class LookiSession:
         self.close()
 
     def connect(self) -> None:
-        if self._socket is not None:
+        if self._transport is not None:
             return
-        sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-        try:
-            # Windows-specific options.  An already paired device may reject
-            # them on some stacks, so the connection itself remains decisive.
-            sock.setsockopt(3, -2147483647, 1)  # SO_BTH_AUTHENTICATE
-            sock.setsockopt(3, 2, 1)  # SO_BTH_ENCRYPT
-        except OSError:
-            pass
-        sock.settimeout(10)
-        try:
-            sock.connect((self.address, self.channel))
-        except Exception:
-            sock.close()
-            raise
-        self._socket = sock
+        self._transport = self._transport_factory(self.address, self.channel, 10)
 
     def close(self) -> None:
-        if self._socket is not None:
-            self._socket.close()
-            self._socket = None
+        if self._transport is not None:
+            self._transport.close()
+            self._transport = None
 
     def send(self, tag: int, payload: bytes = b"") -> None:
         """Send one outer message with an automatically assigned sequence."""
-        if self._socket is None:
+        if self._transport is None:
             raise RuntimeError("LookiSession is not connected")
         body = uint(1, self._sequence) + message(tag, payload)
         self._sequence += 1
-        self._socket.sendall(frame(body))
+        self._transport.sendall(frame(body))
 
     def _send_ack(self, sequence: int) -> None:
-        if self._socket is None:
+        if self._transport is None:
             raise RuntimeError("LookiSession is not connected")
-        self._socket.sendall(frame(uint(ACK, sequence)))
+        self._transport.sendall(frame(uint(ACK, sequence)))
 
     def receive(self, deadline: float) -> Iterator[ReceivedMessage]:
         """Yield protocol messages until the monotonic deadline expires."""
-        if self._socket is None:
+        if self._transport is None:
             raise RuntimeError("LookiSession is not connected")
         while time.monotonic() < deadline:
-            self._socket.settimeout(min(0.5, max(0.05, deadline - time.monotonic())))
+            self._transport.settimeout(min(0.5, max(0.05, deadline - time.monotonic())))
             try:
-                chunk = self._socket.recv(65536)
-            except socket.timeout:
+                chunk = self._transport.recv(65536)
+            except TimeoutError:
                 continue
             if not chunk:
                 raise ConnectionError("Looki closed the RFCOMM session")

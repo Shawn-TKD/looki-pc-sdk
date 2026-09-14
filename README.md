@@ -1,10 +1,11 @@
 # Looki PC SDK
 
-一个面向用户自有 Looki L1 的非官方 Windows SDK。它让电脑在手机 App 未连接时，
+一个面向用户自有 Looki L1 的非官方 Windows/macOS SDK。它让电脑在手机 App 未连接时，
 直接通过蓝牙控制设备，并通过 Looki 自身热点读取原始媒体。
 
-> 当前为实验性 `0.1.0`，已在一台 Looki L1（设备版本 1.53、软件版本 79）和
-> Windows 11 上实机验证。项目与 Looki 官方无隶属或授权关系。
+> 当前为实验性 `0.2.0`。Windows 11 已在一台 Looki L1（设备版本 1.53、软件版本
+> 79）上实机验证；macOS 后端已经实现和静态检查，仍需要 Mac 实机完成蓝牙、热点与
+> 媒体闭环验证。项目与 Looki 官方无隶属或授权关系。
 
 ## 为什么做这个项目
 
@@ -41,10 +42,21 @@ SDK 只负责可靠地连接设备并取得原始数据。选择什么模型、�
 | 隐私灯开关 | 命令已验证；设备没有独立设置回执 |
 | Looki 热点、HTTP 媒体清单、JPG/M4A/MP4 下载 | 已验证 |
 
+## 平台状态
+
+| 平台 | 状态 | 主机接口 |
+|---|---|---|
+| Windows 10/11 | 已实机验证 | Winsock RFCOMM、Bluetooth APIs、`netsh` |
+| macOS | 实验性适配，待实机验证 | PyObjC IOBluetooth、`networksetup` |
+
+协议、认证、控制和 HTTP 下载代码在两个平台共用。只有 RFCOMM、系统配对和 Wi-Fi
+切换属于平台后端。macOS 的安装、权限和已知问题见 [docs/MACOS.md](docs/MACOS.md)。
+
 ## 安装
 
-需要 Windows 10/11、Python 3.11 或更高版本，以及同时支持 Classic Bluetooth
-和 Wi-Fi 的电脑。
+需要 Python 3.11 或更高版本，以及同时支持 Classic Bluetooth 和 Wi-Fi 的电脑。
+
+Windows：
 
 ```powershell
 git clone https://github.com/Shawn-TKD/looki-pc-sdk.git
@@ -54,12 +66,30 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .
 ```
 
+macOS：
+
+```bash
+git clone https://github.com/Shawn-TKD/looki-pc-sdk.git
+cd looki-pc-sdk
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip setuptools
+.venv/bin/python -m pip install -e '.[macos]'
+```
+
 ## 快速验证
 
-首次在一台电脑配对时，让 Looki 进入蓝牙配对模式，然后运行：
+首次在一台电脑配对时，让 Looki 进入蓝牙配对模式，然后运行。Windows 使用
+`.venv\Scripts\looki.exe`，macOS 使用 `.venv/bin/looki`：
 
 ```powershell
 .\.venv\Scripts\looki.exe pair --address AA:BB:CC:DD:EE:FF --renew
+```
+
+macOS 首次配对不要使用 `--renew`；需要重新绑定时先在系统蓝牙设置中忽略设备：
+
+```bash
+.venv/bin/looki pair --address AA:BB:CC:DD:EE:FF
+.venv/bin/looki status --address AA:BB:CC:DD:EE:FF
 ```
 
 配对完成后退出配对模式并唤醒设备。只读状态不一定需要所有者绑定：
@@ -101,7 +131,9 @@ with LookiSession("AA:BB:CC:DD:EE:FF") as session:
 ## 项目结构
 
 ```text
-src/looki/       SDK、CLI、Windows 配对与热点支持
+src/looki/       跨平台 SDK、CLI、协议和设备功能
+src/looki/macos/ macOS IOBluetooth、配对与 Wi-Fi 热点支持
+src/looki/transport/ 跨平台 RFCOMM 字节流接口
 proto/           逆向恢复的 LCMP v1/v2 schema
 tools/           HCI/RFCOMM 分析工具，不含任何抓包
 docs/research/   协议、固件和 Android 平台研究结论

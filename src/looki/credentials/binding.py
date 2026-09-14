@@ -1,8 +1,8 @@
 """In-memory owner-binding support for the exploratory SDK.
 
-This module deliberately does not persist, print, or serialize authorization
-payloads.  A production desktop bridge should replace the capture-based helper
-with an explicit per-device enrollment flow stored through Windows DPAPI.
+Portable bundles are intentionally simple so one owner can move a device between
+their Windows and macOS computers. They are bearer credentials and must be kept
+outside Git and transferred through an encrypted channel.
 """
 
 from __future__ import annotations

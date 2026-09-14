@@ -96,7 +96,7 @@ OTA 和实机不是同一软件版本，因此静态发现只代表 1.54.80 样�
 
 ## 下一阶段
 
-1. 在第二台 Windows 电脑验证 owner-binding 的可迁移范围。
+1. 在第二台 Windows 电脑和一台 macOS 电脑验证 owner-binding 的可迁移范围。
 2. 完成媒体增量同步，覆盖 JPG、M4A、MP4 的下载和恢复电脑 Wi-Fi。
 3. 验证 USB File Transfer/MTP 是否能成为有线高速数据面。
 4. 继续分析 AON、实时语音、Wi-Fi 保存列表与设备日志协议。

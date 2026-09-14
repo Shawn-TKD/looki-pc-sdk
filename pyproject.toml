@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "looki-pc-sdk"
-version = "0.1.0"
-description = "Unofficial Windows SDK for user-owned Looki L1 devices"
+version = "0.2.0"
+description = "Unofficial Windows and macOS SDK for user-owned Looki L1 devices"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -15,7 +15,14 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: Microsoft :: Windows :: Windows 10",
   "Operating System :: Microsoft :: Windows :: Windows 11",
+  "Operating System :: MacOS :: MacOS X",
   "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+macos = [
+  "pyobjc-framework-Cocoa>=10; platform_system == 'Darwin'",
+  "pyobjc-framework-IOBluetooth>=10; platform_system == 'Darwin'",
 ]
 
 [project.scripts]
