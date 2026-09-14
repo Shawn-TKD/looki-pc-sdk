@@ -1,0 +1,417 @@
+// Recovered from embedded FileDescriptorProto in DevoMain.apk/classes.dex
+// syntax: proto3
+syntax = "proto3";
+
+package ai.looki.devo.protocol.lcmp.v2;
+
+enum BatteryStatePb {
+  BATTERY_STATE_UNKNOWN = 0;
+  BATTERY_STATE_DISCHARGING = 1;
+  BATTERY_STATE_CHARGING = 2;
+  BATTERY_STATE_FULL = 3;
+  BATTERY_STATE_NOT_CHARGING = 4;
+}
+enum BatteryHealthPb {
+  BATTERY_HEALTH_UNKNOWN = 0;
+  BATTERY_HEALTH_GOOD = 1;
+  BATTERY_HEALTH_OVERHEAT = 2;
+  BATTERY_HEALTH_DEAD = 3;
+  BATTERY_HEALTH_OVER_VOLTAGE = 4;
+  BATTERY_HEALTH_UNSPECIFIED_FAILURE = 5;
+  BATTERY_HEALTH_COLD = 6;
+}
+enum OtaPrepareOutcomePb {
+  OTA_PREPARE_OUTCOME_UNSPECIFIED = 0;
+  OTA_PREPARE_STARTED = 1;
+  OTA_PREPARE_RESUMED = 2;
+  OTA_PREPARE_REPLACED = 3;
+  OTA_PREPARE_ALREADY_UP_TO_DATE = 4;
+  OTA_PREPARE_REJECTED = 5;
+  OTA_PREPARE_BUSY = 6;
+}
+enum OtaRetryActionPb {
+  OTA_RETRY_ACTION_UNSPECIFIED = 0;
+  OTA_RETRY_INSTALL = 1;
+  OTA_RESTART_TRANSFER = 2;
+}
+enum OtaErrorCodePb {
+  OTA_ERROR_NONE = 0;
+  OTA_ERROR_INVALID_REQUEST = 1;
+  OTA_ERROR_INVALID_MANIFEST = 2;
+  OTA_ERROR_SIGNATURE_INVALID = 3;
+  OTA_ERROR_DEVICE_INCOMPATIBLE = 4;
+  OTA_ERROR_VERSION_REJECTED = 5;
+  OTA_ERROR_PACKAGE_MISMATCH = 6;
+  OTA_ERROR_INVALID_STATE = 7;
+  OTA_ERROR_OFFSET_MISMATCH = 8;
+  OTA_ERROR_CHUNK_INVALID = 9;
+  OTA_ERROR_IMAGE_INVALID = 10;
+  OTA_ERROR_STORAGE = 11;
+  OTA_ERROR_PRECONDITION = 12;
+  OTA_ERROR_INSTALL = 13;
+  OTA_ERROR_PERSISTENT_STATE = 14;
+  OTA_ERROR_INTERNAL = 15;
+}
+enum OtaSessionStatePb {
+  OTA_SESSION_NONE = 0;
+  OTA_SESSION_ACTIVE = 1;
+  OTA_SESSION_REBOOT_PENDING = 2;
+  OTA_SESSION_ERROR = 3;
+}
+enum OtaModuleStatePb {
+  OTA_MODULE_STATE_UNSPECIFIED = 0;
+  OTA_MODULE_PENDING_TRANSFER = 1;
+  OTA_MODULE_RECEIVING = 2;
+  OTA_MODULE_VERIFYING = 3;
+  OTA_MODULE_READY = 4;
+  OTA_MODULE_INSTALLING = 5;
+  OTA_MODULE_INSTALLED = 6;
+  OTA_MODULE_FAILED = 7;
+}
+enum VideoFormat {
+  VID_FMT_DEFAULT = 0;
+  VID_FMT_H264 = 1;
+  VID_FMT_JPEG = 2;
+}
+enum VideoResolution {
+  RES_DEFAULT = 0;
+  RES_1200x1600 = 1;
+  RES_600x800 = 2;
+  RES_300x400 = 3;
+}
+enum AudioFormat {
+  AUD_FMT_DEFAULT = 0;
+  AUD_FMT_PCM = 1;
+  AUD_FMT_AAC = 2;
+  AUD_FMT_OPUS = 3;
+}
+message CmdUserUnbindPb {
+}
+message QueryDeviceInfoPb {
+}
+message DeviceInfoPb {
+  string manufacturer = 1;
+  string model_id = 2;
+  string serial_number = 3;
+  string firmware_version = 4;
+  string hardware_revision = 5;
+  string bt_mac = 6;
+  string wifi_mac = 7;
+  string name = 8;
+}
+message QueryBatteryStatusPb {
+}
+message BatteryStatusPb {
+  uint32 level = 1;
+  bool plugged = 2;
+  uint32 temperature = 5;
+  ai.looki.devo.protocol.lcmp.v2.BatteryStatePb state = 3;
+  ai.looki.devo.protocol.lcmp.v2.BatteryHealthPb heath = 4;
+  uint32 realtime_s = 10;
+  uint32 uptime_s = 11;
+}
+message QueryStorageStatusPb {
+}
+message StorageStatusPb {
+  int64 total = 1;
+  int64 free = 2;
+}
+message CmdDeviceNameSetPb {
+  string name = 1;
+}
+message TimeSyncPb {
+  uint64 timestamp_ms = 1;
+  string time_zone = 2;
+}
+message AckTimeSyncPb {
+  uint64 timestamp_ms = 1;
+  string time_zone = 2;
+}
+message CmdFactoryResetPb {
+}
+message CmdPowerOffPb {
+  bool reboot = 1;
+}
+message CmdLogRequestPb {
+  enum Action {
+    STOP = 0;
+    START = 1;
+  }
+  ai.looki.devo.protocol.lcmp.v2.CmdLogRequestPb.Action action = 1;
+}
+message LogDataPb {
+  enum CompressFormat {
+    NONE = 0;
+    GZIP = 1;
+  }
+  uint64 timestamp_ms = 1;
+  uint32 duration_ms = 2;
+  ai.looki.devo.protocol.lcmp.v2.LogDataPb.CompressFormat compress_format = 3;
+  uint32 checksum = 5;
+  bytes data = 15;
+}
+message OtaErrorPb {
+  ai.looki.devo.protocol.lcmp.v2.OtaErrorCodePb code = 1;
+  optional string detail = 2;
+}
+message QueryVersionInfoPb {
+}
+message ModuleVersionPb {
+  string module_id = 1;
+  uint32 version_code = 2;
+}
+message VersionInfoPb {
+  uint32 version_code = 1;
+  string version_name = 2;
+  uint64 build_date_utc_s = 3;
+  repeated ai.looki.devo.protocol.lcmp.v2.ModuleVersionPb modules = 4;
+}
+message CmdOtaPreparePb {
+  bytes manifest_json = 1;
+  bytes manifest_sig = 2;
+}
+message AckOtaPreparePb {
+  ai.looki.devo.protocol.lcmp.v2.OtaPrepareOutcomePb outcome = 1;
+  optional bytes package_id = 2;
+  repeated string module_ids = 3;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb error = 4;
+}
+message CmdOtaModuleBeginPb {
+  bytes package_id = 1;
+  string module_id = 2;
+}
+message AckOtaModuleBeginPb {
+  uint32 next_offset = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb error = 2;
+}
+message OtaDataPb {
+  string module_id = 1;
+  uint32 chunk_offset = 2;
+  bool compressed = 3;
+  bytes data = 4;
+}
+message AckOtaDataPb {
+  uint32 next_offset = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb error = 2;
+}
+message CmdOtaInstallPb {
+  bytes package_id = 1;
+}
+message OtaInstallResultPb {
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb error = 1;
+}
+message OtaProgressPb {
+  uint32 completed_units = 1;
+  uint32 total_units = 2;
+}
+message OtaModuleStatusPb {
+  string module_id = 1;
+  ai.looki.devo.protocol.lcmp.v2.OtaModuleStatePb state = 2;
+  optional uint32 next_offset = 3;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaProgressPb install_progress = 4;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaRetryActionPb retry_action = 5;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb error = 6;
+}
+message QueryOtaStatusPb {
+}
+message OtaStatusPb {
+  ai.looki.devo.protocol.lcmp.v2.OtaSessionStatePb session_state = 1;
+  repeated ai.looki.devo.protocol.lcmp.v2.OtaModuleStatusPb modules = 2;
+  optional ai.looki.devo.protocol.lcmp.v2.OtaErrorPb session_error = 3;
+}
+message QueryOtaRecordPb {
+}
+message OtaRecordPb {
+  optional bytes manifest_json = 1;
+  optional uint64 completed_at_utc_ms = 2;
+}
+message VideoConfigPb {
+  optional bool video_on = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.VideoFormat video_format = 2;
+  optional ai.looki.devo.protocol.lcmp.v2.VideoResolution video_resolution = 3;
+  optional uint32 video_frame_interval_ms = 4;
+  optional uint32 video_bitrate_kbps = 5;
+}
+message AudioConfigPb {
+  optional bool audio_on = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.AudioFormat audio_format = 2;
+  optional uint32 audio_sample_rate = 3;
+  optional uint32 audio_bitrate_kbps = 4;
+}
+message CmdCaptureRequest {
+  optional ai.looki.devo.protocol.lcmp.v2.VideoConfigPb video_config = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.AudioConfigPb audio_config = 2;
+}
+message QueryCaptureStatusPb {
+}
+message CaptureStatusPb {
+  optional ai.looki.devo.protocol.lcmp.v2.VideoConfigPb video_config = 1;
+  optional ai.looki.devo.protocol.lcmp.v2.AudioConfigPb audio_config = 2;
+}
+message SliceDataPb {
+  uint32 total_count = 1;
+  uint32 id = 2;
+  bytes data = 15;
+}
+message VideoDataPb {
+  uint32 timestamp_ms = 1;
+  ai.looki.devo.protocol.lcmp.v2.VideoFormat format = 2;
+  ai.looki.devo.protocol.lcmp.v2.VideoResolution resolution = 3;
+  uint32 checksum = 4;
+  ai.looki.devo.protocol.lcmp.v2.SliceDataPb slice = 15;
+}
+message AckVideoDataPb {
+  uint32 timestamp_ms = 1;
+}
+message AudioDataPb {
+  uint32 timestamp_ms = 1;
+  ai.looki.devo.protocol.lcmp.v2.AudioFormat format = 2;
+  uint32 duration_ms = 3;
+  uint32 checksum = 4;
+  ai.looki.devo.protocol.lcmp.v2.SliceDataPb slice = 15;
+}
+message AckAudioDataPb {
+  uint32 timestamp_ms = 1;
+}
+message LedConfig {
+  uint32 id = 1;
+  uint32 color0 = 2;
+  optional uint32 color1 = 3;
+  optional uint32 time0 = 4;
+  optional uint32 time1 = 5;
+  optional uint32 time2 = 6;
+  optional uint32 time3 = 7;
+}
+message CmdLedControlPb {
+  ai.looki.devo.protocol.lcmp.v2.LedConfig led0 = 1;
+}
+message QueryLedStatusPb {
+}
+message LedStatusPb {
+  ai.looki.devo.protocol.lcmp.v2.LedConfig led0 = 1;
+}
+message CmdVibratorControlPb {
+  enum Effect {
+    NONE = 0;
+    SHORT = 1;
+    LONG = 2;
+    DOUBLE = 3;
+  }
+  ai.looki.devo.protocol.lcmp.v2.CmdVibratorControlPb.Effect effect = 1;
+}
+message EventKeyPb {
+  uint32 id = 1;
+  bool press_down = 2;
+  uint32 timestamp_ms = 3;
+}
+message EventHallPb {
+  uint32 id = 1;
+  bool on = 2;
+  uint32 timestamp_ms = 3;
+}
+message CmdWifiConnectPb {
+  string ssid = 1;
+  string password = 2;
+  optional bytes bssid = 3;
+}
+message WifiConnectErrorPb {
+  enum ErrorCode {
+    UNKNOWN = 0;
+    WRONG_PASSWORD = 1;
+    CONNECTION_TIMEOUT = 2;
+    NETWORK_UNAVAILABLE = 3;
+  }
+  string ssid = 1;
+  optional int32 error_code = 2;
+}
+message CmdWifiDisconnectPb {
+}
+message QueryWifiStatePb {
+}
+message WifiStatePb {
+  enum ConnectState {
+    DISCONNECTED = 0;
+    CONNECTING = 1;
+    CONNECTED = 2;
+  }
+  optional string ssid = 1;
+  optional bytes bssid = 2;
+  optional bool connect_state = 3;
+  optional int32 rssi = 4;
+  optional string ip = 5;
+  optional string secure = 6;
+  optional int32 frequency = 9;
+}
+message DummyPb {
+  bytes data = 1;
+}
+message CmdBandwidthTestPb {
+  enum Action {
+    STOP = 0;
+    START = 1;
+  }
+  ai.looki.devo.protocol.lcmp.v2.CmdBandwidthTestPb.Action action = 1;
+  uint32 block_size = 2;
+}
+message BandwidthTestDataPb {
+  uint32 seq = 1;
+  bytes payload = 15;
+}
+message HeaderPb {
+  uint32 timestamp_ms = 1;
+  uint32 seq = 2;
+}
+message LcmpV2MessagePb {
+  oneof body {
+    ai.looki.devo.protocol.lcmp.v2.CmdUserUnbindPb cmd_user_unbind = 11;
+    ai.looki.devo.protocol.lcmp.v2.QueryDeviceInfoPb query_device_info = 101;
+    ai.looki.devo.protocol.lcmp.v2.DeviceInfoPb device_info = 102;
+    ai.looki.devo.protocol.lcmp.v2.QueryBatteryStatusPb query_battery_status = 103;
+    ai.looki.devo.protocol.lcmp.v2.BatteryStatusPb battery_status = 104;
+    ai.looki.devo.protocol.lcmp.v2.QueryStorageStatusPb query_storage_status = 105;
+    ai.looki.devo.protocol.lcmp.v2.StorageStatusPb storage_status = 106;
+    ai.looki.devo.protocol.lcmp.v2.CmdDeviceNameSetPb cmd_device_name_set = 107;
+    ai.looki.devo.protocol.lcmp.v2.TimeSyncPb time_sync = 201;
+    ai.looki.devo.protocol.lcmp.v2.AckTimeSyncPb ack_time_sync = 202;
+    ai.looki.devo.protocol.lcmp.v2.CmdFactoryResetPb cmd_factory_reset = 211;
+    ai.looki.devo.protocol.lcmp.v2.CmdPowerOffPb cmd_power_off = 212;
+    ai.looki.devo.protocol.lcmp.v2.CmdLogRequestPb cmd_log_request = 281;
+    ai.looki.devo.protocol.lcmp.v2.LogDataPb log_data = 282;
+    ai.looki.devo.protocol.lcmp.v2.QueryVersionInfoPb query_version_info = 301;
+    ai.looki.devo.protocol.lcmp.v2.VersionInfoPb version_info = 302;
+    ai.looki.devo.protocol.lcmp.v2.CmdOtaPreparePb cmd_ota_prepare = 311;
+    ai.looki.devo.protocol.lcmp.v2.AckOtaPreparePb ack_ota_prepare = 312;
+    ai.looki.devo.protocol.lcmp.v2.CmdOtaModuleBeginPb cmd_ota_module_begin = 321;
+    ai.looki.devo.protocol.lcmp.v2.AckOtaModuleBeginPb ack_ota_module_begin = 322;
+    ai.looki.devo.protocol.lcmp.v2.OtaDataPb ota_data = 323;
+    ai.looki.devo.protocol.lcmp.v2.AckOtaDataPb ack_ota_data = 324;
+    ai.looki.devo.protocol.lcmp.v2.CmdOtaInstallPb cmd_ota_install = 331;
+    ai.looki.devo.protocol.lcmp.v2.OtaInstallResultPb ota_install_result = 332;
+    ai.looki.devo.protocol.lcmp.v2.QueryOtaStatusPb query_ota_status = 333;
+    ai.looki.devo.protocol.lcmp.v2.OtaStatusPb ota_status = 334;
+    ai.looki.devo.protocol.lcmp.v2.QueryOtaRecordPb query_ota_record = 341;
+    ai.looki.devo.protocol.lcmp.v2.OtaRecordPb ota_record = 342;
+    ai.looki.devo.protocol.lcmp.v2.CmdCaptureRequest cmd_capture_request = 401;
+    ai.looki.devo.protocol.lcmp.v2.QueryCaptureStatusPb query_capture_status = 402;
+    ai.looki.devo.protocol.lcmp.v2.CaptureStatusPb capture_status = 403;
+    ai.looki.devo.protocol.lcmp.v2.VideoDataPb video_data = 404;
+    ai.looki.devo.protocol.lcmp.v2.AckVideoDataPb ack_video_data = 405;
+    ai.looki.devo.protocol.lcmp.v2.AudioDataPb audio_data = 406;
+    ai.looki.devo.protocol.lcmp.v2.AckAudioDataPb ack_audio_data = 407;
+    ai.looki.devo.protocol.lcmp.v2.CmdLedControlPb cmd_led_control = 501;
+    ai.looki.devo.protocol.lcmp.v2.QueryLedStatusPb query_led_status = 502;
+    ai.looki.devo.protocol.lcmp.v2.LedStatusPb led_status = 503;
+    ai.looki.devo.protocol.lcmp.v2.CmdVibratorControlPb cmd_vibrator_control = 511;
+    ai.looki.devo.protocol.lcmp.v2.EventKeyPb event_key = 521;
+    ai.looki.devo.protocol.lcmp.v2.EventHallPb event_hall = 531;
+    ai.looki.devo.protocol.lcmp.v2.CmdWifiConnectPb cmd_wifi_connect = 801;
+    ai.looki.devo.protocol.lcmp.v2.CmdWifiDisconnectPb cmd_wifi_disconnect = 802;
+    ai.looki.devo.protocol.lcmp.v2.WifiConnectErrorPb wifi_connect_error = 803;
+    ai.looki.devo.protocol.lcmp.v2.QueryWifiStatePb query_wifi_state = 804;
+    ai.looki.devo.protocol.lcmp.v2.WifiStatePb wifi_state = 805;
+    ai.looki.devo.protocol.lcmp.v2.DummyPb dummy = 901;
+    ai.looki.devo.protocol.lcmp.v2.CmdBandwidthTestPb bw_cmd = 902;
+    ai.looki.devo.protocol.lcmp.v2.BandwidthTestDataPb bw_data = 903;
+  }
+  ai.looki.devo.protocol.lcmp.v2.HeaderPb head = 1;
+}

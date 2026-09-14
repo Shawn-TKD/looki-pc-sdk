@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Device-owner credentials and personal captures never belong in Git.
+private/
+*.looki-binding
+*.btsnoop
+*.pcap
+*.pcapng
+*.bin
+
+# Media and vendor binaries are intentionally excluded.
+*.jpg
+*.jpeg
+*.m4a
+*.mp4
+*.apk
+*.img
+*.zip
+*.7z

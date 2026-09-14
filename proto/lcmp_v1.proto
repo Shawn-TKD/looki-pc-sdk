@@ -1,0 +1,718 @@
+// Recovered from embedded FileDescriptorProto in DevoMain.apk/classes.dex
+// syntax: proto3
+syntax = "proto3";
+
+package ai.looki.devo.protocol.lcmp;
+
+message DummyPb {
+  bytes data = 1;
+}
+message HeartbeatPb {
+}
+message LoginStateSyncPb {
+  bool is_logged_in = 1;
+}
+message LookiCounterPb {
+  uint32 direction = 1;
+  uint32 counter = 2;
+}
+message LookiSleepTimeQueryPb {
+}
+message LookiSleepTimeSyncPb {
+  double realtime = 1;
+  double uptime = 2;
+}
+message LookiSettingQueryPb {
+}
+message LookiSettingSyncPb {
+  uint32 aon_mode = 1;
+  uint64 aon_interval = 2;
+  uint64 aon_duration = 3;
+  uint32 aon_onoff = 4;
+  uint32 upload_state = 5;
+  uint32 privacy_light_enabled = 6;
+  uint32 sys_volume = 7;
+  uint32 music_volume = 8;
+  uint32 voice_type = 9;
+  uint64 video_duration_limit = 10;
+  uint32 status_light_enabled = 11;
+  uint32 storage_auto_cleanup_enabled = 12;
+}
+message LookiSysVolumeUpdatePb {
+  uint32 sys_volume = 1;
+}
+message LookiPrivacyLightUpdatePb {
+  uint32 privacy_light_enabled = 1;
+}
+message LookiStatusLightUpdatePb {
+  uint32 status_light_enabled = 1;
+}
+message VideoDurationLimitUpdatePb {
+  uint64 video_duration_limit = 1;
+}
+message TimeSyncPb {
+  double timestamp = 1;
+  string time_zone = 2;
+}
+message LocationQueryPb {
+}
+message LocationPb {
+  double latitude = 1;
+  double longitude = 2;
+  double altitude = 3;
+  double accuracy = 4;
+  double speed = 5;
+  double bearing = 6;
+  string location_des = 7;
+  double timestamp = 8;
+}
+message AudioBeginPb {
+  string audio_format = 1;
+  optional int32 sample_rate = 2;
+  optional int32 bits_per_sample = 3;
+  optional int32 channels = 4;
+  optional int64 cloud_timestamp_ms = 5;
+  optional int64 phone_timestamp_ms = 6;
+  optional int64 device_timestamp_ms = 7;
+}
+message AudioDataPb {
+  bytes data = 1;
+  optional int64 cloud_timestamp_ms = 2;
+  optional int64 phone_timestamp_ms = 3;
+  optional int64 device_timestamp_ms = 4;
+}
+message AudioEndPb {
+  int32 total_bytes = 1;
+  optional bool cancel = 2;
+  optional int32 duration_ms = 3;
+  optional int64 cloud_timestamp_ms = 4;
+  optional int64 phone_timestamp_ms = 5;
+  optional int64 device_timestamp_ms = 6;
+}
+message AudioStopPb {
+}
+message Latest3ImageQueryPb {
+}
+message Latest3ImageSyncPb {
+  repeated bytes thumbnail_list = 1;
+}
+message ImagePb {
+  int64 file_timestamp_ms = 1;
+  bytes thumbnail = 2;
+  double timestamp_start_camera = 3;
+  double timestamp_capture_begin = 4;
+  double timestamp_capture_end = 5;
+  double timestamp_compress_done = 6;
+  int32 image_type = 7;
+  optional string filename = 8;
+  optional int32 record_mode = 10;
+  optional int32 media_type = 11;
+  optional string parent_name = 12;
+  optional int32 index = 13;
+  optional int32 total_indexes = 14;
+}
+message VideoPb {
+  int64 file_timestamp_ms = 1;
+  bytes thumbnail = 2;
+  int32 width = 3;
+  int32 height = 4;
+  int64 duration_ms = 5;
+}
+message FilePb {
+  string filename = 1;
+  int64 size = 2;
+  optional bytes data = 3;
+  optional int64 timestamp = 4;
+  optional string usage = 5;
+  optional string tags = 6;
+  optional bytes checksum = 7;
+  optional int32 record_mode = 10;
+  optional int32 media_type = 11;
+  optional string parent_name = 12;
+  optional int32 index = 13;
+  optional int32 total_indexes = 14;
+}
+message BatteryQueryPb {
+}
+message BatteryStatePb {
+  int32 percentage = 1;
+  bool charging = 2;
+  int32 temperature = 3;
+  optional bool overheat = 4;
+  optional bool charging_but_not_charging = 5;
+}
+message WifiScanPb {
+}
+message WifiScanResultPb {
+  repeated ai.looki.devo.protocol.lcmp.WifiStatePb wifi = 1;
+}
+message WifiSavedListQueryPb {
+}
+message WifiSavedListResultPb {
+  repeated ai.looki.devo.protocol.lcmp.WifiStatePb wifi = 1;
+}
+message WifiConnectPb {
+  string ssid = 1;
+  string password = 2;
+}
+message WifiDisconnectPb {
+}
+message WifiForgetPb {
+  string ssid = 1;
+}
+message WifiForgetResultPb {
+  string ssid = 1;
+  bool success = 2;
+}
+message WifiQueryPb {
+}
+message WifiStatePb {
+  optional string ssid = 1;
+  optional bool connected = 2;
+  optional int32 rssi = 3;
+  optional string ip = 4;
+  optional bool is_secure = 5;
+  optional int32 connect_state = 6;
+  optional int32 error_code = 7;
+  optional int32 band = 8;
+  optional int32 frequency = 9;
+  optional string bssid = 10;
+  optional int32 band_mode = 11;
+}
+message WifiBandModeQueryPb {
+}
+message WifiBandModeSetPb {
+  int32 band_mode = 1;
+}
+message WifiBandModeStatePb {
+  int32 band_mode = 1;
+}
+message WifiP2pRequestPb {
+  bool start = 1;
+}
+message WifiP2pStatePb {
+  string mac_address = 1;
+  string network_name = 2;
+  string passphrase = 3;
+}
+message DeviceFileSycnPb {
+  bool start = 1;
+  int32 upload_state = 2;
+  int32 hotspot_type = 3;
+}
+message HotspotConnectPb {
+  int32 state = 1;
+  string ssid = 2;
+  string password = 3;
+  string bssid = 4;
+}
+message DeviceNameQueryPb {
+}
+message DeviceNameSetPb {
+  string name = 1;
+}
+message DeviceNamePb {
+  string name = 1;
+}
+message BleAdvertiseStartPb {
+}
+message BleAdvertiseStopPb {
+}
+message FileServerQueryPb {
+}
+message FileServerStatePb {
+  bool running = 1;
+  optional string address = 2;
+  optional int32 port = 3;
+  optional string username = 4;
+  optional string password = 5;
+}
+message HttpFileServerStatePb {
+  bool running = 1;
+  optional string address = 2;
+  optional int32 port = 3;
+}
+message FileListUpdatePb {
+}
+message FileListPathSyncPb {
+  string file_path = 1;
+  string file_path_origin = 2;
+}
+message StorageCapacityQueryPb {
+}
+message StorageCapacityStatePb {
+  int64 total = 1;
+  int64 userdata = 2;
+  int64 available = 3;
+}
+message NewMediaFileQueryPb {
+}
+message NewMediaFileStatePb {
+  int32 image_count = 1;
+  int32 image_thumb_count = 2;
+  int32 audio_count = 3;
+  int32 video_count = 4;
+  int32 video_thumb_count = 5;
+  int32 video_audio_count = 6;
+  int32 auto_image_count = 7;
+  int32 auto_image_thumb_count = 8;
+  int32 auto_video_count = 9;
+  int32 auto_video_thumb_count = 10;
+}
+message FileConfirmPb {
+  string filename = 1;
+}
+message FileUploadedStateSyncPb {
+  string file_path = 1;
+}
+message FileUploadSpeedSyncPb {
+  int64 speed = 1;
+  int64 total_size = 2;
+  int64 uploaded_size = 3;
+}
+message ErrorPb {
+  message UnsupportedMessageErrorPb {
+    repeated int32 number = 1;
+  }
+  repeated string error = 1;
+  optional ai.looki.devo.protocol.lcmp.ErrorPb.UnsupportedMessageErrorPb unsupported_message = 2;
+}
+message VersionQueryPb {
+}
+message VersionStatePb {
+  string main_version = 1;
+  string os_version = 2;
+  string current_version = 3;
+}
+message UpgradeQueryPb {
+  string filename = 1;
+  optional bytes checksum = 2;
+}
+message UpgradeResultPb {
+  bool success = 1;
+  optional string message = 2;
+  string type = 3;
+}
+message AppLaunchPb {
+}
+message MediaSessionControlPb {
+  bool pause = 1;
+}
+message MediaInfoPb {
+  string title = 1;
+  string artist = 2;
+  string album = 3;
+  string genre = 4;
+}
+message DeviceAuthRequestPb {
+  string auth_string = 1;
+  string signed_string = 2;
+}
+message DeviceAuthResultPb {
+  string result_string = 1;
+}
+message AuthResultSyncPb {
+  uint32 result = 1;
+}
+message DeviceUploadInfoQueryPb {
+  string tag = 1;
+}
+message DeviceUploadInfoSyncPb {
+  string timestamp = 1;
+  string signature = 2;
+  string tag = 3;
+}
+message UnBindSyncPb {
+  string user_id = 1;
+}
+message DeviceInfoSyncPb {
+  string device_name = 1;
+  string sn = 2;
+  string request_id = 3;
+  string signature = 4;
+  string device_version = 5;
+  string software_version = 6;
+  bool isactive = 7;
+  string device_model = 8;
+  string current_version = 9;
+  string bt_mac = 10;
+  string wifi_mac = 11;
+}
+message DeviceInfoQueryPb {
+  double timestamp = 1;
+  string time_zone = 2;
+}
+message UserInfoSyncPb {
+  string user_id = 1;
+  string device_secret = 2;
+  double timestamp = 3;
+  string time_zone = 4;
+  double latitude = 5;
+  double longitude = 6;
+  double altitude = 7;
+  double accuracy = 8;
+  double speed = 9;
+  double bearing = 10;
+  string location_des = 11;
+  string phone_version = 12;
+  string region = 13;
+}
+message FileLocalDateQueryPb {
+}
+message FileLocalDateSyncPb {
+  double start_timestamp = 1;
+  double end_timestamp = 2;
+}
+message AonConfigQueryPb {
+}
+message AonConfigSyncPb {
+  uint32 aon_mode = 1;
+  uint64 aon_interval = 2;
+  uint64 aon_duration = 3;
+  uint32 aon_onoff = 4;
+  optional uint32 auto_aon_mode = 11;
+  optional uint64 auto_aon_interval = 12;
+  optional uint64 auto_aon_duration = 13;
+  optional uint32 auto_aon_onoff = 14;
+}
+message AonConfigUpdatePb {
+  uint32 aon_mode = 1;
+  uint64 aon_interval = 2;
+  uint64 aon_duration = 3;
+  optional uint32 sub_mode = 4;
+}
+message AonConfigJsonUpdatePb {
+  string json = 1;
+  optional bool is_cloud = 2;
+  optional bool is_default = 3;
+}
+message AonConfigJsonQueryPb {
+}
+message AonConfigJsonStatePb {
+  string static_config_json = 1;
+  string auto_default_config_json = 2;
+}
+message UploadFileOnOffPb {
+  uint32 upload_state = 1;
+}
+message UploadFileStateQueryPb {
+}
+message UploadFileStatePb {
+  uint32 upload_state = 1;
+  uint32 user_image_count = 2;
+  uint32 user_image_thumb_count = 3;
+  uint32 auto_image_count = 4;
+  uint32 auto_image_thumb_count = 5;
+  uint32 user_audio_count = 6;
+  uint32 user_video_count = 7;
+  uint32 user_video_thumb_count = 8;
+  uint32 user_video_audio_count = 9;
+  uint32 auto_video_count = 10;
+  uint32 auto_video_thumb_count = 11;
+  uint32 user_image_unuploaded_count = 12;
+  uint32 user_image_thumb_unuploaded_count = 13;
+  uint32 auto_image_unuploaded_count = 14;
+  uint32 auto_image_thumb_unuploaded_count = 15;
+  uint32 user_audio_unuploaded_count = 16;
+  uint32 user_video_unuploaded_count = 17;
+  uint32 user_video_thumb_unuploaded_count = 18;
+  uint32 user_video_audio_unuploaded_count = 19;
+  uint32 auto_video_unuploaded_count = 20;
+  uint32 auto_video_thumb_unuploaded_count = 21;
+}
+message MfiNowPlayingOnOffPb {
+  uint32 now_playing_state = 1;
+}
+message MfiNowPlayingQueryPb {
+}
+message MfiNowPlayingUpdatePb {
+  string now_playing_name = 1;
+  string now_playing_status = 2;
+}
+message ApiAddressUpdatePb {
+  string address = 1;
+  string env_code = 2;
+}
+message FileUploadDirectPb {
+  string ssid = 1;
+}
+message FileUploadDirectStatePb {
+  uint32 code = 1;
+}
+message FileUploadStopPb {
+}
+message FileUploadStopStatePb {
+  uint32 code = 1;
+}
+message FileUploadInfoQueryPb {
+}
+message FileUploadInfoSyncPb {
+  uint32 upload_state = 1;
+  uint32 upload_file_count = 2;
+  uint32 file_count = 3;
+  uint32 upload_last_time = 4;
+  uint32 file_count_begin = 5;
+  uint32 upload_type = 6;
+  uint32 upload_stop_reason = 7;
+}
+message OTAInfoQueryPb {
+  string ota_new_version = 1;
+  string ota_firmware_filemd5 = 2;
+  string ota_software_filemd5 = 3;
+}
+message OTACmdPb {
+  uint32 ota_cmd = 1;
+  string ota_new_version = 2;
+  string ota_firmware_filemd5 = 3;
+  string ota_software_filemd5 = 4;
+}
+message OTAProgressSyncPb {
+  uint32 ota_progress_type = 1;
+  uint32 ota_progress = 2;
+  uint32 ota_type = 3;
+  string ota_version = 4;
+}
+message OTAInfoSyncPb {
+  uint32 code = 1;
+  uint32 ota_state = 2;
+  uint32 ota_type = 3;
+  string ota_version = 4;
+}
+message DeviceRecordStateQueryPb {
+}
+message DeviceRecordStateSyncPb {
+  uint32 video_state = 1;
+  uint32 audio_state = 2;
+  uint32 video_type = 3;
+}
+message AIThinkingStateSyncPb {
+  uint32 aithinking_state = 1;
+  uint32 end_reason = 2;
+  bool no_tone = 3;
+}
+message AppStateSyncPb {
+  uint32 app_state = 1;
+  uint32 device_page_state = 2;
+}
+message DeveloperStateQueryPb {
+}
+message DeveloperStateSyncPb {
+  uint32 dev_state = 1;
+}
+message DeveloperOnOffPb {
+  uint32 dev_state = 1;
+}
+message DeviceLockQueryPb {
+}
+message DeviceLockStatePb {
+  uint32 lock_state = 1;
+}
+message DeviceLockSetPb {
+  uint32 lock_state = 1;
+}
+message DeviceVoiceTypeStatePb {
+  uint32 type = 1;
+}
+message DeviceLogUploadCmdPb {
+}
+message DeviceFunctionCmdPb {
+  uint32 function_action = 1;
+  uint32 function_state = 2;
+}
+message DeviceShutdownCmdPb {
+}
+message DeviceShutdownAckPb {
+  uint32 accepted = 1;
+}
+message RecordEndedPb {
+  int64 start_time_ms = 1;
+  int64 duration_ms = 2;
+  uint32 media_type = 3;
+  uint32 record_mode = 4;
+  uint32 reason = 5;
+}
+message ImuDataPb {
+  bytes compressed_data = 1;
+  string filename = 2;
+  bool is_last = 3;
+}
+message UsbFileTransferQueryPb {
+}
+message UsbFileTransferStatePb {
+  uint32 mtp_enabled = 1;
+}
+message UsbFileTransferSetPb {
+  uint32 mtp_enabled = 1;
+}
+message CloudMessagePb {
+  optional string json = 1;
+  optional bool is_default = 2;
+}
+message RequestCloudMessagePb {
+}
+message CachedMessagePb {
+  int64 original_timestamp = 1;
+  uint32 message_type = 2;
+  bytes payload = 3;
+  string location = 4;
+}
+message LanguageSetPb {
+  string language = 1;
+}
+message AllowCloudActionQueryPb {
+}
+message AllowCloudActionSetPb {
+  bool allow = 1;
+}
+message AllowCloudActionStatePb {
+  bool allow = 1;
+}
+message StorageAutoCleanupQueryPb {
+}
+message StorageAutoCleanupSetPb {
+  bool enabled = 1;
+}
+message StorageAutoCleanupStatePb {
+  bool enabled = 1;
+}
+message LcmpMessagePb {
+  oneof type {
+    uint32 seq = 1;
+    uint32 ack = 2;
+  }
+  oneof payload {
+    uint32 packet_length = 3;
+    ai.looki.devo.protocol.lcmp.DummyPb dummy = 10;
+    ai.looki.devo.protocol.lcmp.TimeSyncPb time_sync = 11;
+    ai.looki.devo.protocol.lcmp.LocationPb location = 12;
+    ai.looki.devo.protocol.lcmp.AudioBeginPb audio_begin = 13;
+    ai.looki.devo.protocol.lcmp.AudioDataPb audio_data = 14;
+    ai.looki.devo.protocol.lcmp.AudioEndPb audio_end = 15;
+    ai.looki.devo.protocol.lcmp.AudioStopPb audio_stop = 16;
+    ai.looki.devo.protocol.lcmp.ImagePb image = 17;
+    ai.looki.devo.protocol.lcmp.VideoPb video = 18;
+    ai.looki.devo.protocol.lcmp.BatteryQueryPb battery_query = 19;
+    ai.looki.devo.protocol.lcmp.BatteryStatePb battery_state = 20;
+    ai.looki.devo.protocol.lcmp.HeartbeatPb heartbeat = 30;
+    ai.looki.devo.protocol.lcmp.WifiScanPb wifi_scan = 32;
+    ai.looki.devo.protocol.lcmp.WifiScanResultPb wifi_scan_result = 33;
+    ai.looki.devo.protocol.lcmp.WifiConnectPb wifi_connect = 34;
+    ai.looki.devo.protocol.lcmp.WifiDisconnectPb wifi_disconnect = 35;
+    ai.looki.devo.protocol.lcmp.WifiQueryPb wifi_query = 36;
+    ai.looki.devo.protocol.lcmp.WifiStatePb wifi_state = 37;
+    ai.looki.devo.protocol.lcmp.DeviceNameQueryPb device_name_query = 38;
+    ai.looki.devo.protocol.lcmp.DeviceNameSetPb device_name_set = 39;
+    ai.looki.devo.protocol.lcmp.DeviceNamePb device_name = 40;
+    ai.looki.devo.protocol.lcmp.BleAdvertiseStartPb ble_advertise_start = 41;
+    ai.looki.devo.protocol.lcmp.BleAdvertiseStopPb ble_advertise_stop = 42;
+    ai.looki.devo.protocol.lcmp.FileServerQueryPb file_server_query = 43;
+    ai.looki.devo.protocol.lcmp.FileServerStatePb file_server_state = 44;
+    ai.looki.devo.protocol.lcmp.StorageCapacityQueryPb storage_capacity_query = 45;
+    ai.looki.devo.protocol.lcmp.StorageCapacityStatePb storage_capacity_state = 46;
+    ai.looki.devo.protocol.lcmp.WifiP2pRequestPb wifi_p2p_request = 47;
+    ai.looki.devo.protocol.lcmp.WifiP2pStatePb wifi_p2p_state = 48;
+    ai.looki.devo.protocol.lcmp.NewMediaFileQueryPb new_media_file_query = 49;
+    ai.looki.devo.protocol.lcmp.NewMediaFileStatePb new_media_file_state = 50;
+    ai.looki.devo.protocol.lcmp.FilePb file = 51;
+    ai.looki.devo.protocol.lcmp.FileConfirmPb file_confirm = 52;
+    ai.looki.devo.protocol.lcmp.ErrorPb error = 80;
+    ai.looki.devo.protocol.lcmp.VersionQueryPb version_query = 90;
+    ai.looki.devo.protocol.lcmp.VersionStatePb version_state = 91;
+    ai.looki.devo.protocol.lcmp.UpgradeQueryPb upgrade_query = 92;
+    ai.looki.devo.protocol.lcmp.UpgradeResultPb upgrade_result = 93;
+    ai.looki.devo.protocol.lcmp.AppStateSyncPb app_state_sync = 99;
+    ai.looki.devo.protocol.lcmp.AppLaunchPb app_launch = 100;
+    ai.looki.devo.protocol.lcmp.MediaSessionControlPb media_session_control = 101;
+    ai.looki.devo.protocol.lcmp.MediaInfoPb media_info = 102;
+    ai.looki.devo.protocol.lcmp.HotspotConnectPb hotspot_connect = 103;
+    ai.looki.devo.protocol.lcmp.LookiSleepTimeQueryPb looki_sleep_time_query = 104;
+    ai.looki.devo.protocol.lcmp.LookiSleepTimeSyncPb looki_sleep_time_sync = 105;
+    ai.looki.devo.protocol.lcmp.DeviceAuthRequestPb devices_auth_request = 200;
+    ai.looki.devo.protocol.lcmp.DeviceAuthResultPb devices_auth_result = 201;
+    ai.looki.devo.protocol.lcmp.AuthResultSyncPb auth_result_sync = 202;
+    ai.looki.devo.protocol.lcmp.DeviceInfoSyncPb device_info_sync = 203;
+    ai.looki.devo.protocol.lcmp.DeviceInfoQueryPb device_info_query = 204;
+    ai.looki.devo.protocol.lcmp.UserInfoSyncPb user_info_sync = 205;
+    ai.looki.devo.protocol.lcmp.UnBindSyncPb unbind_sync = 206;
+    ai.looki.devo.protocol.lcmp.FileLocalDateQueryPb file_local_date_query = 207;
+    ai.looki.devo.protocol.lcmp.FileLocalDateSyncPb file_local_date_sync = 208;
+    ai.looki.devo.protocol.lcmp.AonConfigQueryPb aon_config_query = 209;
+    ai.looki.devo.protocol.lcmp.AonConfigSyncPb aon_config_sync = 210;
+    ai.looki.devo.protocol.lcmp.AonConfigUpdatePb aon_config_update = 211;
+    ai.looki.devo.protocol.lcmp.UploadFileOnOffPb upload_file_on_off = 212;
+    ai.looki.devo.protocol.lcmp.UploadFileStateQueryPb upload_file_state_query = 213;
+    ai.looki.devo.protocol.lcmp.UploadFileStatePb upload_file_state = 214;
+    ai.looki.devo.protocol.lcmp.WifiSavedListQueryPb wifi_saved_list_query = 215;
+    ai.looki.devo.protocol.lcmp.WifiSavedListResultPb wifi_saved_list_result = 216;
+    ai.looki.devo.protocol.lcmp.WifiForgetPb wifi_forget = 217;
+    ai.looki.devo.protocol.lcmp.WifiForgetResultPb wifi_forget_result = 218;
+    ai.looki.devo.protocol.lcmp.ApiAddressUpdatePb api_address_update = 219;
+    ai.looki.devo.protocol.lcmp.MfiNowPlayingOnOffPb mfi_now_playing_on_off = 220;
+    ai.looki.devo.protocol.lcmp.MfiNowPlayingQueryPb mfi_now_playing_query = 221;
+    ai.looki.devo.protocol.lcmp.MfiNowPlayingUpdatePb mfi_now_playing_update = 222;
+    ai.looki.devo.protocol.lcmp.FileUploadDirectPb file_upload_direct = 223;
+    ai.looki.devo.protocol.lcmp.FileUploadDirectStatePb file_upload_direct_state = 224;
+    ai.looki.devo.protocol.lcmp.OTAInfoQueryPb ota_info_query = 225;
+    ai.looki.devo.protocol.lcmp.OTAInfoSyncPb ota_info_sync = 226;
+    ai.looki.devo.protocol.lcmp.OTAProgressSyncPb ota_progress_sync = 227;
+    ai.looki.devo.protocol.lcmp.OTACmdPb ota_cmd = 228;
+    ai.looki.devo.protocol.lcmp.LookiCounterPb looki_counter = 229;
+    ai.looki.devo.protocol.lcmp.FileUploadStopPb file_upload_stop = 230;
+    ai.looki.devo.protocol.lcmp.FileUploadStopStatePb file_upload_stop_state = 231;
+    ai.looki.devo.protocol.lcmp.FileUploadInfoQueryPb file_upload_info_query = 232;
+    ai.looki.devo.protocol.lcmp.FileUploadInfoSyncPb file_upload_info_sync = 233;
+    ai.looki.devo.protocol.lcmp.DeviceRecordStateQueryPb device_record_state_query = 234;
+    ai.looki.devo.protocol.lcmp.DeviceRecordStateSyncPb device_record_state_sync = 235;
+    ai.looki.devo.protocol.lcmp.FileListPathSyncPb file_list_path_sync = 236;
+    ai.looki.devo.protocol.lcmp.FileListUpdatePb file_list_update = 237;
+    ai.looki.devo.protocol.lcmp.DeveloperOnOffPb developer_on_off = 238;
+    ai.looki.devo.protocol.lcmp.DeveloperStateQueryPb developer_state_query = 239;
+    ai.looki.devo.protocol.lcmp.DeveloperStateSyncPb developer_state_sync = 240;
+    ai.looki.devo.protocol.lcmp.AIThinkingStateSyncPb ai_thinking_state_sync = 241;
+    ai.looki.devo.protocol.lcmp.LookiSettingQueryPb looki_setting_query = 242;
+    ai.looki.devo.protocol.lcmp.LookiSettingSyncPb looki_setting_sync = 243;
+    ai.looki.devo.protocol.lcmp.LookiSysVolumeUpdatePb looki_sys_volume_update = 244;
+    ai.looki.devo.protocol.lcmp.LookiPrivacyLightUpdatePb looki_privacy_light_update = 245;
+    ai.looki.devo.protocol.lcmp.LocationQueryPb location_query = 246;
+    ai.looki.devo.protocol.lcmp.DeviceLockQueryPb device_lock_query = 247;
+    ai.looki.devo.protocol.lcmp.DeviceLockStatePb device_lock_state = 248;
+    ai.looki.devo.protocol.lcmp.DeviceLockSetPb device_lock_set = 249;
+    ai.looki.devo.protocol.lcmp.Latest3ImageQueryPb latest3_image_query = 250;
+    ai.looki.devo.protocol.lcmp.Latest3ImageSyncPb latest3_image_sync = 251;
+    ai.looki.devo.protocol.lcmp.DeviceLogUploadCmdPb device_log_upload_cmd = 252;
+    ai.looki.devo.protocol.lcmp.DeviceFileSycnPb device_file_sycn = 253;
+    ai.looki.devo.protocol.lcmp.FileUploadedStateSyncPb file_uploaded_state_sync = 254;
+    ai.looki.devo.protocol.lcmp.DeviceVoiceTypeStatePb device_voice_type_state = 255;
+    ai.looki.devo.protocol.lcmp.HttpFileServerStatePb http_file_server_state = 256;
+    ai.looki.devo.protocol.lcmp.DeviceFunctionCmdPb device_function_cmd = 257;
+    ai.looki.devo.protocol.lcmp.UsbFileTransferQueryPb usb_file_transfer_query = 258;
+    ai.looki.devo.protocol.lcmp.UsbFileTransferStatePb usb_file_transfer_state = 259;
+    ai.looki.devo.protocol.lcmp.UsbFileTransferSetPb usb_file_transfer_set = 260;
+    ai.looki.devo.protocol.lcmp.FileUploadSpeedSyncPb file_upload_speed_sync = 261;
+    ai.looki.devo.protocol.lcmp.VideoDurationLimitUpdatePb video_duration_limit_update = 262;
+    ai.looki.devo.protocol.lcmp.CloudMessagePb cloud_message = 263;
+    ai.looki.devo.protocol.lcmp.LanguageSetPb language_set = 264;
+    ai.looki.devo.protocol.lcmp.AllowCloudActionQueryPb allow_cloud_action_query = 265;
+    ai.looki.devo.protocol.lcmp.AllowCloudActionSetPb allow_cloud_action_set = 266;
+    ai.looki.devo.protocol.lcmp.AllowCloudActionStatePb allow_cloud_action_state = 267;
+    ai.looki.devo.protocol.lcmp.DeviceUploadInfoQueryPb device_upload_info_query = 268;
+    ai.looki.devo.protocol.lcmp.DeviceUploadInfoSyncPb device_upload_info_sync = 269;
+    ai.looki.devo.protocol.lcmp.WifiBandModeQueryPb wifi_band_mode_query = 270;
+    ai.looki.devo.protocol.lcmp.WifiBandModeSetPb wifi_band_mode_set = 271;
+    ai.looki.devo.protocol.lcmp.WifiBandModeStatePb wifi_band_mode_state = 272;
+    ai.looki.devo.protocol.lcmp.LookiStatusLightUpdatePb looki_status_light_update = 273;
+    ai.looki.devo.protocol.lcmp.RequestCloudMessagePb request_cloud_message = 274;
+    ai.looki.devo.protocol.lcmp.CachedMessagePb cached_message = 275;
+    ai.looki.devo.protocol.lcmp.LoginStateSyncPb login_state_sync = 276;
+    ai.looki.devo.protocol.lcmp.DeviceShutdownCmdPb device_shutdown_cmd = 277;
+    ai.looki.devo.protocol.lcmp.DeviceShutdownAckPb device_shutdown_ack = 278;
+    ai.looki.devo.protocol.lcmp.RecordEndedPb record_ended = 279;
+    ai.looki.devo.protocol.lcmp.ImuDataPb imu_data = 280;
+    ai.looki.devo.protocol.lcmp.StorageAutoCleanupQueryPb storage_auto_cleanup_query = 281;
+    ai.looki.devo.protocol.lcmp.StorageAutoCleanupSetPb storage_auto_cleanup_set = 282;
+    ai.looki.devo.protocol.lcmp.StorageAutoCleanupStatePb storage_auto_cleanup_state = 283;
+    ai.looki.devo.protocol.lcmp.AonConfigJsonUpdatePb aon_config_json_update = 284;
+    ai.looki.devo.protocol.lcmp.AonConfigJsonQueryPb aon_config_json_query = 285;
+    ai.looki.devo.protocol.lcmp.AonConfigJsonStatePb aon_config_json_state = 286;
+  }
+}
