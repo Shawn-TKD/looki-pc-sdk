@@ -48,6 +48,15 @@ python3 -m venv .venv
 .venv/bin/looki status --address AA:BB:CC:DD:EE:FF
 ```
 
+若命令停在认证阶段，增加安全 trace：
+
+```bash
+.venv/bin/looki status --address AA:BB:CC:DD:EE:FF --trace
+```
+
+trace 不输出 challenge 或凭据值。各事件的解释见
+[research/AUTH-HANDSHAKE.md](research/AUTH-HANDSHAKE.md)。
+
 成功标准是返回电量、型号或存储等 LCMP 状态。系统蓝牙页面显示“已连接”不是这一层的
 成功标准。若失败，请保存完整错误文字和其中的 `IOReturn` 数值。
 

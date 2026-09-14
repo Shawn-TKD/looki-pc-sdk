@@ -30,11 +30,16 @@ class FakeTransport:
 class SessionTransportTest(unittest.TestCase):
     def test_authentication_uses_injected_transport_and_fresh_challenge(self) -> None:
         challenge = b"fresh-challenge"
-        incoming = frame(uint(1, 41) + message(200, message(1, challenge)))
+        incoming = (
+            frame(uint(1, 41) + message(200, message(1, challenge)))
+            + frame(uint(1, 42) + message(202))
+        )
         transport = FakeTransport(incoming)
+        trace: list[dict[str, object]] = []
         session = LookiSession(
             "AA:BB:CC:DD:EE:FF",
             transport_factory=lambda _address, _channel, _timeout: transport,
+            trace=trace.append,
         )
 
         with session:
@@ -46,9 +51,11 @@ class SessionTransportTest(unittest.TestCase):
             for body in framer.feed(packet):
                 decoded.extend(fields(body))
         self.assertIn((2, 0, 41), decoded)
+        self.assertIn((2, 0, 42), decoded)
         auth_payload = next(value for tag, wire, value in decoded if tag == 201 and wire == 2)
         self.assertIn((1, 2, challenge), list(fields(auth_payload)))
         self.assertTrue(transport.closed)
+        self.assertIn("auth.challenge.accepted", [event["event"] for event in trace])
 
 
 if __name__ == "__main__":

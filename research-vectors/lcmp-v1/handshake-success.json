@@ -1,0 +1,23 @@
+{
+  "format": "sanitized LCMP v1 handshake structure",
+  "transport": {
+    "type": "Bluetooth Classic RFCOMM",
+    "channel": 3,
+    "framing": "4-byte big-endian length followed by protobuf envelope"
+  },
+  "sequence": [
+    {"direction": "device_to_client", "outer_tag": 200, "name": "DeviceAuthRequestPb", "action": "ack_device_sequence_and_read_fresh_field_1"},
+    {"direction": "client_to_device", "outer_tag": 201, "name": "DeviceAuthResultPb", "action": "echo_current_challenge_in_field_1"},
+    {"direction": "device_to_client", "outer_tag": 2, "name": "Ack", "action": "acknowledges_client_sequence"},
+    {"direction": "device_to_client", "outer_tag": 202, "name": "AuthResultSyncPb", "observed_result": 0, "meaning": "challenge_stage_accepted"},
+    {"direction": "client_to_device", "outer_tag": 205, "name": "UserInfoSyncPb", "payload": "per-device private owner binding; withheld"},
+    {"direction": "client_to_device", "outer_tag": 276, "name": "LoginStateSyncPb", "payload": "per-device private owner binding; withheld"},
+    {"direction": "client_to_device", "outer_tag": 99, "name": "AppStateSyncPb", "action": "send when the requested workflow requires page state"}
+  ],
+  "withheld": [
+    "challenge bytes because they are session-specific and not reusable",
+    "owner binding payloads",
+    "device and host addresses",
+    "hotspot credentials"
+  ]
+}

@@ -5,6 +5,7 @@
 | 文档 | 内容 |
 |---|---|
 | [research/PROTOCOL.md](research/PROTOCOL.md) | RFCOMM、LCMP、认证、控制命令和媒体数据面 |
+| [research/AUTH-HANDSHAKE.md](research/AUTH-HANDSHAKE.md) | challenge 状态机、安全 trace 与脱敏握手向量 |
 | [research/ANDROID-PLATFORM.md](research/ANDROID-PLATFORM.md) | Android 11、Snapdragon W5、分区、DevoMain 特权应用 |
 | [research/FIRMWARE-OTA.md](research/FIRMWARE-OTA.md) | OTA 结构、版本、更新路径与公开仓库边界 |
 | [research/FIRMWARE-REVERSE-ENGINEERING.md](research/FIRMWARE-REVERSE-ENGINEERING.md) | 固件取得、拆包方法、模块地图和逆向进度 |

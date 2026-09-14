@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import time
 from pathlib import Path
 
@@ -36,6 +37,19 @@ def _add_device_arguments(parser: argparse.ArgumentParser, *, binding_required: 
     parser.add_argument("--address", required=True, help="Looki Bluetooth MAC address")
     parser.add_argument("--channel", type=int, default=3)
     parser.add_argument("--binding", required=binding_required, help="private .looki-binding file")
+    parser.add_argument("--trace", action="store_true", help="print a credential-safe protocol trace")
+
+
+def _trace(event: dict[str, object]) -> None:
+    print(json.dumps({"looki_trace": event}, ensure_ascii=False), file=sys.stderr, flush=True)
+
+
+def _session(args: argparse.Namespace) -> LookiSession:
+    return LookiSession(
+        args.address,
+        args.channel,
+        trace=_trace if args.trace else None,
+    )
 
 
 def _observe(session: LookiSession, seconds: float) -> list[dict[str, int]]:
@@ -54,7 +68,7 @@ def _observe(session: LookiSession, seconds: float) -> list[dict[str, int]]:
 def _control(args: argparse.Namespace) -> dict[str, object]:
     owner = _binding(args.binding)
     assert owner is not None
-    with LookiSession(args.address, args.channel) as session:
+    with _session(args) as session:
         session.authenticate(owner_binding=owner)
         controls = LookiControls(session)
         if args.command == "privacy-on":
@@ -69,7 +83,7 @@ def _control(args: argparse.Namespace) -> dict[str, object]:
 def _media(args: argparse.Namespace) -> dict[str, object]:
     owner = _binding(args.binding)
     assert owner is not None
-    with LookiSession(args.address, args.channel) as session:
+    with _session(args) as session:
         service = request_file_service(session, owner)
         with hotspot_connection(service.ssid, service.password, interface=args.interface):
             client = HttpMediaClient(service)
@@ -138,7 +152,7 @@ def main() -> int:
         owner.save_portable(output)
         result = {"binding_created": str(output.resolve())}
     elif args.command == "status":
-        with LookiSession(args.address, args.channel) as session:
+        with _session(args) as session:
             session.authenticate(owner_binding=_binding(args.binding))
             result = read_status(session)
     elif args.command in (*CONTROL_METHODS, "privacy-on", "privacy-off"):

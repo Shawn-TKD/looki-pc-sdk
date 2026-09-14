@@ -3,7 +3,7 @@
 一个面向用户自有 Looki L1 的非官方 Windows/macOS SDK。它让电脑在手机 App 未连接时，
 直接通过蓝牙控制设备，并通过 Looki 自身热点读取原始媒体。
 
-> 当前为实验性 `0.2.0`。Windows 11 已在一台 Looki L1（设备版本 1.53、软件版本
+> 当前为实验性 `0.2.1`。Windows 11 已在一台 Looki L1（设备版本 1.53、软件版本
 > 79）上实机验证；macOS 后端已经实现和静态检查，仍需要 Mac 实机完成蓝牙、热点与
 > 媒体闭环验证。项目与 Looki 官方无隶属或授权关系。
 
@@ -53,6 +53,8 @@ SDK 只负责可靠地连接设备并取得原始数据。选择什么模型、�
 切换属于平台后端。macOS 的安装、权限和已知问题见 [docs/MACOS.md](docs/MACOS.md)。
 在提交 Mac 实机结果前，可按
 [macOS 验证清单](docs/MACOS-VERIFICATION.md)逐层测试并生成脱敏诊断信息。
+连接停在 challenge 时，使用 `--trace` 并参考
+[认证握手说明](docs/research/AUTH-HANDSHAKE.md)，无需公开原始手机抓包。
 
 ## 安装
 
