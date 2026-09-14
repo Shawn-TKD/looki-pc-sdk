@@ -51,6 +51,8 @@ SDK 只负责可靠地连接设备并取得原始数据。选择什么模型、�
 
 协议、认证、控制和 HTTP 下载代码在两个平台共用。只有 RFCOMM、系统配对和 Wi-Fi
 切换属于平台后端。macOS 的安装、权限和已知问题见 [docs/MACOS.md](docs/MACOS.md)。
+在提交 Mac 实机结果前，可按
+[macOS 验证清单](docs/MACOS-VERIFICATION.md)逐层测试并生成脱敏诊断信息。
 
 ## 安装
 
@@ -74,6 +76,7 @@ cd looki-pc-sdk
 python3 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip setuptools
 .venv/bin/python -m pip install -e '.[macos]'
+.venv/bin/looki doctor
 ```
 
 ## 快速验证

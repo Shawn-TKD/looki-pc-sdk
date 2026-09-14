@@ -12,7 +12,17 @@ macOS 适配已经覆盖：
 
 Windows 路径已经实机验证。macOS 代码是在 Windows 开发机上完成的静态检查，尚未在
 真实 Mac 和 Looki 上完成端到端验证，所以目前标记为实验性。第一次 Mac 验证最有价值
-的顺序是：配对 → `status` → `photo` → `media-list` → `download-one`。
+的顺序是：配对 → `status` → `photo` → `media-list` → `download-one`。逐步操作和
+可分享记录格式见 [MACOS-VERIFICATION.md](MACOS-VERIFICATION.md)。
+
+安装后可以先运行不接触设备的诊断：
+
+```bash
+.venv/bin/looki doctor
+```
+
+它只输出 macOS、CPU、Python、PyObjC 模块、系统网络工具和 Wi-Fi 接口是否可用，不
+读取设备 MAC、owner-binding、热点口令或媒体。
 
 ## 为什么 macOS 需要单独适配
 
@@ -138,3 +148,14 @@ macOS 菜单栏手动选择原网络即可。
 IOReturn 数值，以及成功时的媒体数量。不要保存或公开 owner-binding、热点密码、设备
 真实 MAC 和下载的个人媒体。验证结果会用于调整 PyObjC 方法签名、run loop 和 Wi-Fi
 恢复行为，然后把 macOS 状态从“实验性”提升为“实机验证”。
+
+## Apple 接口资料
+
+- [IOBluetooth 框架](https://developer.apple.com/documentation/iobluetooth)
+- [IOBluetoothDevice.openRFCOMMChannelSync](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevice/openrfcommchannelsync%28_%3Awithchannelid%3Adelegate%3A%29)
+- [IOBluetoothRFCOMMChannelDelegate](https://developer.apple.com/documentation/iobluetooth/iobluetoothrfcommchanneldelegate)
+- [IOBluetoothDevicePair](https://developer.apple.com/documentation/iobluetooth/iobluetoothdevicepair)
+- [使用 networksetup 确认接口](https://developer.apple.com/documentation/network/recording-a-packet-trace)
+
+这些链接描述的是 macOS 主机接口。Looki 的 channel 3、LCMP framing 和消息映射来自
+本项目的固件分析与实机抓包，不是 Apple 定义的协议。

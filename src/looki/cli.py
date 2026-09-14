@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 from .credentials.binding import OwnerBinding, owner_binding_from_framed_capture
+from .diagnostics import host_diagnostics
 from .device.control import LookiControls
 from .device.http_media import HttpMediaClient, summarize_files
 from .device.media import request_file_service
@@ -94,6 +95,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
 
+    commands.add_parser("doctor", help="print non-sensitive host integration diagnostics")
+
     pair = commands.add_parser("pair", help="establish the host Classic Bluetooth bond")
     pair.add_argument("--address", required=True)
     pair.add_argument("--renew", action="store_true")
@@ -124,7 +127,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
-    if args.command == "pair":
+    if args.command == "doctor":
+        result = host_diagnostics()
+    elif args.command == "pair":
         pair_device(args.address, renew=args.renew)
         result: dict[str, object] = {"paired": True, "address": args.address}
     elif args.command == "enroll":

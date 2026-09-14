@@ -12,6 +12,7 @@
 | [LOCAL-FIRST-AI.md](LOCAL-FIRST-AI.md) | 不经厂商云端的媒体整理和 Agent 集成设计 |
 | [SECOND-PC.md](SECOND-PC.md) | 第二台 Windows 电脑迁移和验证步骤 |
 | [MACOS.md](MACOS.md) | macOS 安装、蓝牙权限、配对、热点和问题排查 |
+| [MACOS-VERIFICATION.md](MACOS-VERIFICATION.md) | macOS 分层实机验证与脱敏记录模板 |
 
 `proto/lcmp_v1.proto` 与 `proto/lcmp_v2.proto` 是从本地静态分析恢复的消息 schema。
 `tools/analyze_phone_actions.py` 用于离线解析用户自己采集的 HCI/RFCOMM 数据，
