@@ -62,7 +62,10 @@ def parse_address(address: str) -> int:
 def pair_device(address: str, *, renew: bool = False) -> None:
     """Establish the Classic bond needed by Looki's RFCOMM control channel."""
     target = parse_address(address)
-    api = c.WinDLL("BluetoothAPIs.dll")
+    # The pairing entry points are exported by bthprops.cpl on Windows. Loading
+    # BluetoothAPIs.dll works for some discovery helpers but does not expose
+    # BluetoothAuthenticateDeviceEx on current Windows 11 builds.
+    api = c.WinDLL("bthprops.cpl")
     callback_type = c.WINFUNCTYPE(w.BOOL, c.c_void_p, c.POINTER(Params))
 
     api.BluetoothGetDeviceInfo.argtypes = [w.HANDLE, c.POINTER(Device)]
