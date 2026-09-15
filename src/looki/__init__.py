@@ -12,4 +12,4 @@ from .device.session import LookiSession
 
 __all__ = ["HttpMediaClient", "LookiControls", "LookiSession", "OwnerBinding"]
 
-__version__ = "0.2.4"
+__version__ = "0.3.0"

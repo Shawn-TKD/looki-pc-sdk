@@ -8,6 +8,7 @@
 | [research/AUTH-HANDSHAKE.md](research/AUTH-HANDSHAKE.md) | challenge 状态机、安全 trace 与脱敏握手向量 |
 | [research/BLUETOOTH-SESSION-TIMELINE.md](research/BLUETOOTH-SESSION-TIMELINE.md) | ACL 认证/加密、RFCOMM PN/MSC 与第一条 LCMP 数据的脱敏时序 |
 | [research/MACOS-ACL-LIFECYCLE.md](research/MACOS-ACL-LIFECYCLE.md) | macOS HFP 抢占、ACL 生命周期、普通重连 DISC 与原生探针方向 |
+| [research/WINDOWS-VERIFIED-SESSIONS.md](research/WINDOWS-VERIFIED-SESSIONS.md) | Windows 配对、challenge、五项状态查询和成功/失败证据 |
 | [research/ANDROID-PLATFORM.md](research/ANDROID-PLATFORM.md) | Android 11、Snapdragon W5、分区、DevoMain 特权应用 |
 | [research/FIRMWARE-OTA.md](research/FIRMWARE-OTA.md) | OTA 结构、版本、更新路径与公开仓库边界 |
 | [research/FIRMWARE-REVERSE-ENGINEERING.md](research/FIRMWARE-REVERSE-ENGINEERING.md) | 固件取得、拆包方法、模块地图和逆向进度 |
@@ -16,6 +17,7 @@
 | [SECOND-PC.md](SECOND-PC.md) | 第二台 Windows 电脑迁移和验证步骤 |
 | [MACOS.md](MACOS.md) | macOS 安装、蓝牙权限、配对、热点和问题排查 |
 | [MACOS-VERIFICATION.md](MACOS-VERIFICATION.md) | macOS 分层实机验证与脱敏记录模板 |
+| [WINDOWS-AGENT.md](WINDOWS-AGENT.md) | 新 Windows 电脑和本地 Agent 的安装、配对与验证流程 |
 
 `proto/lcmp_v1.proto` 与 `proto/lcmp_v2.proto` 是从本地静态分析恢复的消息 schema。
 `tools/analyze_phone_actions.py` 用于离线解析用户自己采集的 HCI/RFCOMM 数据，

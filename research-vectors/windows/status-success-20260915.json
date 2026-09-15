@@ -1,0 +1,32 @@
+{
+  "format": "looki-windows-status-session-v1",
+  "sdk_version": "0.2.4",
+  "host": "Windows 11",
+  "sensitive_values_removed": true,
+  "pairing": {
+    "method": "BluetoothAuthenticateDeviceEx dedicated bonding",
+    "library": "bthprops.cpl",
+    "renewed_existing_bond": true,
+    "authentication_status": 0
+  },
+  "session": [
+    {"direction": "client_to_looki", "event": "rfcomm_connect", "channel": 3},
+    {"direction": "looki_to_client", "event": "lcmp_message", "bytes": 373, "sequence": 100001, "tag": 200, "payload_length": 365, "payload": "withheld"},
+    {"direction": "client_to_looki", "event": "lcmp_ack", "sequence": 100001},
+    {"direction": "client_to_looki", "event": "lcmp_message", "sequence": 1, "tag": 201, "payload_length": 18, "payload": "current-session challenge withheld"},
+    {"direction": "looki_to_client", "event": "lcmp_ack", "sequence": 1},
+    {"direction": "looki_to_client", "event": "lcmp_message", "sequence": 100004, "tag": 202, "result": 0},
+    {"direction": "client_to_looki", "event": "status_queries", "tags": [19, 204, 49, 45, 234]},
+    {"direction": "looki_to_client", "event": "status_replies", "tags": [20, 203, 50, 46, 235]}
+  ],
+  "observed_status": {
+    "battery_percent": 81,
+    "device_version": "1.53",
+    "software_version": "79",
+    "media_total": 20,
+    "storage_total_bytes": 32000000000,
+    "storage_available_bytes": 25220052992
+  },
+  "owner_binding_sent": false,
+  "device_operation_performed": false
+}

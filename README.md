@@ -3,7 +3,7 @@
 一个面向用户自有 Looki L1 的非官方 Windows/macOS SDK。它让电脑在手机 App 未连接时，
 直接通过蓝牙控制设备，并通过 Looki 自身热点读取原始媒体。
 
-> 当前为实验性 `0.2.4`。Windows 11 已在一台 Looki L1（设备版本 1.53、软件版本
+> 当前为实验性 `0.3.0`。Windows 11 已在一台 Looki L1（设备版本 1.53、软件版本
 > 79）上实机验证；macOS 新配对会话已完成 challenge 与状态读取，普通重连、热点与
 > 媒体闭环仍在验证。项目与 Looki 官方无隶属或授权关系。
 
@@ -68,10 +68,20 @@ Windows：
 ```powershell
 git clone https://github.com/Shawn-TKD/looki-pc-sdk.git
 cd looki-pc-sdk
-py -3.12 -m venv .venv
+py -3 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools
 .\.venv\Scripts\python.exe -m pip install -e .
 ```
+
+也可以使用一键准备脚本：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap-windows.ps1
+```
+
+供另一台 Windows 电脑上的 Agent 使用的完整流程见
+[Windows Agent 指南](docs/WINDOWS-AGENT.md)。仓库根目录的 [AGENTS.md](AGENTS.md)
+会向支持仓库指令的编码 Agent 提供相同的操作边界和协议顺序。
 
 macOS：
 
@@ -144,7 +154,9 @@ src/looki/macos/ macOS IOBluetooth、配对与 Wi-Fi 热点支持
 src/looki/transport/ 跨平台 RFCOMM 字节流接口
 proto/           逆向恢复的 LCMP v1/v2 schema
 tools/           HCI/RFCOMM 分析工具，不含任何抓包
+scripts/         Windows 环境准备和主机辅助脚本
 docs/research/   协议、固件和 Android 平台研究结论
+research-vectors/ 可公开的脱敏真实会话结构与时序
 firmware/        可公开的 OTA 元数据、分区清单和系统属性摘录
 private/         本地设备凭据，已被 .gitignore 排除
 ```
