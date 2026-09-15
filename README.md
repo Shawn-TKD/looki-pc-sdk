@@ -33,21 +33,25 @@ SDK 只负责可靠地连接设备并取得原始数据。选择什么模型、�
 
 ## 已验证能力
 
-| 能力 | 实机状态 |
-|---|---|
-| Windows Classic Bluetooth Dedicated Bonding | 已验证 |
-| RFCOMM channel 3、LCMP 分帧、ACK、动态 challenge | 已验证 |
-| 电量、型号、版本、存储、媒体数量、录制状态 | 已验证 |
-| 拍照、录音、录像、日记记录 | 已验证并生成媒体 |
-| 隐私灯开关 | 命令已验证；设备没有独立设置回执 |
-| Looki 热点、HTTP 媒体清单、JPG/M4A/MP4 下载 | 已验证 |
+| 能力 | Windows 11 | macOS |
+|---|---|---|
+| Classic Bluetooth 系统配对 | 已验证 | 已验证 |
+| RFCOMM channel 3、LCMP、动态 challenge | 稳定复现 | 新配对会话成功过，普通重连不稳定 |
+| 电量、版本、存储、媒体数量、录制状态 | 已验证 | 新配对会话已读取五项状态 |
+| 电脑主动拍照、录音、录像、日记记录 | 已验证并生成媒体 | 未完成稳定实机验证 |
+| 隐私灯开关 | 命令已验证 | 未验证 |
+| Looki 热点、HTTP 媒体清单、JPG/M4A/MP4 原文件下载 | 已验证 | 未完成闭环验证 |
+
+Windows 上的完整已验证链路是：电脑通过蓝牙完成认证和控制，Looki
+再开启自身 Wi-Fi 热点，电脑通过 HTTP 读取媒体目录并下载原始文件。照片、
+录音和视频文件不经过蓝牙传输。
 
 ## 平台状态
 
 | 平台 | 状态 | 主机接口 |
 |---|---|---|
 | Windows 10/11 | 已实机验证 | Winsock RFCOMM、Bluetooth APIs、`netsh` |
-| macOS | 实验性适配，待实机验证 | PyObjC IOBluetooth、`networksetup` |
+| macOS | 实验性适配，部分实机验证 | PyObjC IOBluetooth、`networksetup` |
 
 协议、认证、控制和 HTTP 下载代码在两个平台共用。只有 RFCOMM、系统配对和 Wi-Fi
 切换属于平台后端。macOS 的安装、权限和已知问题见 [docs/MACOS.md](docs/MACOS.md)。
