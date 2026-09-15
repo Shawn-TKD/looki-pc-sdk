@@ -10,10 +10,10 @@ macOS 适配已经覆盖：
 - HTTP 媒体清单与 JPG、M4A、MP4 下载；
 - 传输结束后删除临时热点记录并尝试恢复原 Wi-Fi。
 
-Windows 路径已经实机验证。macOS 已验证系统 BR/EDR 配对、基带连接和 channel 3 的
-异步打开，但尚未收到设备主动发送的 tag 200 challenge，因此仍标记为实验性。当前
-故障和协议证据见 [BLUETOOTH-SESSION-TIMELINE.md](research/BLUETOOTH-SESSION-TIMELINE.md)。
-打通 challenge 后再按 `status` → `photo` → `media-list` → `download-one` 验证。
+Windows 路径已经实机验证。macOS 的一次新配对会话也已完成 tag 200 challenge 和五项
+状态查询，但普通重连仍可能在 RFCOMM 协商完成后被 Looki 直接 DISC，因此仍标记为
+实验性。当前故障集中在 HFP profile 抢占和 ACL 生命周期，见
+[MACOS-ACL-LIFECYCLE.md](research/MACOS-ACL-LIFECYCLE.md)。
 
 安装后可以先运行不接触设备的诊断：
 
@@ -136,7 +136,8 @@ macOS 菜单栏手动选择原网络即可。
 |---|---|---|
 | 安装时找不到 `IOBluetooth` | 没安装 macOS 可选依赖 | 运行 `pip install -e '.[macos]'` |
 | 配对后 `status` 仍无法连接 | 手机占用、Looki 未唤醒或只有低功耗蓝牙记录 | 断开手机，唤醒 Looki；忽略设备后重新配对 |
-| channel 3 打开后约两秒被设备关闭 | 基带链路未认证/加密，或异步 open-complete 未正确完成 | 更新到使用异步 RFCOMM 的版本，运行 `--trace`，并检查系统链路加密状态 |
+| channel 3 尚未完成 PN/MSC 就关闭 | 异步 open-complete、认证或加密尚未完成 | 运行 `--trace` 并对照 baseband、加密和 RFCOMM 控制帧 |
+| RFCOMM PN/MSC 完成后收到 DISC | `bluetoothd` 的 HFP 抢占或 ACL 生命周期不符合设备准入状态 | 释放 HFP；保存 baseband 事件时间线，暂时不要反复重新配对 |
 | 出现蓝牙权限错误 | Terminal/Python 没有 Bluetooth 权限 | 在“隐私与安全性 → 蓝牙”授权后重开终端 |
 | PyObjC 安装或加载失败 | Python 架构与 Terminal/Rosetta 不一致 | 在 Apple Silicon 上统一使用原生 arm64 Python |
 | `media-list` 后网络中断 | Mac 已切到 Looki 的无互联网热点 | 等命令结束自动恢复，或手动选回原 Wi-Fi |

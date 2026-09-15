@@ -117,7 +117,7 @@ Wi-Fi 自动恢复：成功 / 需手动
 | `doctor` | Python、PyObjC 或系统工具尚未准备好 |
 | `pair` | macOS 权限、旧绑定或 Looki 配对模式问题 |
 | `status` 打不开 channel 3 | Classic Bluetooth/RFCOMM 问题 |
-| `status` 打开后等不到 challenge | Looki 工作状态或 delegate/run loop 问题 |
+| `status` 打开后等不到 challenge | 先确认 PyObjC 收到的不是全零数据；若 PN/MSC 已完成后设备 DISC，检查 HFP 抢占与 ACL 生命周期 |
 | `photo` 被拒绝 | owner-binding 或 App 状态同步问题 |
 | `media-list` 切网失败 | macOS Wi-Fi 接口或热点关联问题 |
 | 已切热点但 HTTP 超时 | DHCP、文件服务地址或会话持续时间问题 |

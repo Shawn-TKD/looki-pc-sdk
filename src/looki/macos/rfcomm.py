@@ -5,6 +5,8 @@ from __future__ import annotations
 import queue
 import time
 
+from ..transport.buffers import copy_callback_bytes
+
 try:
     import objc
     from Foundation import NSDate, NSDefaultRunLoopMode, NSObject, NSRunLoop
@@ -23,7 +25,7 @@ class _RFCOMMDelegate(NSObject):
         return self
 
     def rfcommChannelData_data_length_(self, _channel: object, data: object, length: int) -> None:
-        self.owner._incoming.put(bytes(data[:length]))
+        self.owner._incoming.put(copy_callback_bytes(data, length))
 
     def rfcommChannelOpenComplete_status_(self, channel: object, status: int) -> None:
         self.owner._channel = channel

@@ -7,6 +7,7 @@
 | [research/PROTOCOL.md](research/PROTOCOL.md) | RFCOMM、LCMP、认证、控制命令和媒体数据面 |
 | [research/AUTH-HANDSHAKE.md](research/AUTH-HANDSHAKE.md) | challenge 状态机、安全 trace 与脱敏握手向量 |
 | [research/BLUETOOTH-SESSION-TIMELINE.md](research/BLUETOOTH-SESSION-TIMELINE.md) | ACL 认证/加密、RFCOMM PN/MSC 与第一条 LCMP 数据的脱敏时序 |
+| [research/MACOS-ACL-LIFECYCLE.md](research/MACOS-ACL-LIFECYCLE.md) | macOS HFP 抢占、ACL 生命周期、普通重连 DISC 与原生探针方向 |
 | [research/ANDROID-PLATFORM.md](research/ANDROID-PLATFORM.md) | Android 11、Snapdragon W5、分区、DevoMain 特权应用 |
 | [research/FIRMWARE-OTA.md](research/FIRMWARE-OTA.md) | OTA 结构、版本、更新路径与公开仓库边界 |
 | [research/FIRMWARE-REVERSE-ENGINEERING.md](research/FIRMWARE-REVERSE-ENGINEERING.md) | 固件取得、拆包方法、模块地图和逆向进度 |
